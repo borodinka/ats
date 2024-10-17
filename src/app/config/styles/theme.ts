@@ -1,12 +1,52 @@
-import { createTheme } from "@mui/material";
+import { LinkProps, createTheme } from "@mui/material";
 
+import { Colors } from "./Colors";
 import { FontFamilies } from "./FontFamilies";
 import { FontWeights } from "./FontWeights";
+import LinkBehavior from "./LinkBehavior";
 
 const theme = createTheme({
   palette: {
     primary: {
       main: "#4640DE",
+    },
+    text: {
+      primary: "#515B6F",
+      secondary: "#25324B",
+    },
+  },
+  components: {
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          fontWeight: FontWeights.semibold,
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        notchedOutline: {
+          borderColor: Colors.primaryGrey,
+          borderRadius: 0,
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 0,
+        },
+      },
+    },
+    MuiLink: {
+      defaultProps: {
+        component: LinkBehavior,
+      } as LinkProps,
+    },
+    MuiButtonBase: {
+      defaultProps: {
+        LinkComponent: LinkBehavior,
+      },
     },
   },
 });
