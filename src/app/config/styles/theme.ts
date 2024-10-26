@@ -14,6 +14,9 @@ const theme = createTheme({
       primary: "#515B6F",
       secondary: "#25324B",
     },
+    grey: {
+      [100]: "#7C8493",
+    },
   },
   components: {
     MuiInputLabel: {
@@ -107,6 +110,10 @@ theme.typography.body1 = {
   lineHeight: "1.6rem",
   fontFamily: FontFamilies.epilogue,
   fontWeight: FontWeights.regular,
+  [theme.breakpoints.down("md")]: {
+    fontSize: "0.875rem",
+    lineHeight: "1.5rem",
+  },
 };
 
 theme.typography.body2 = {
@@ -114,6 +121,10 @@ theme.typography.body2 = {
   lineHeight: "1.6rem",
   fontFamily: FontFamilies.epilogue,
   fontWeight: FontWeights.bold,
+  [theme.breakpoints.down("md")]: {
+    fontSize: "0.875rem",
+    lineHeight: "1.5rem",
+  },
 };
 
 theme.typography.subtitle1 = {
