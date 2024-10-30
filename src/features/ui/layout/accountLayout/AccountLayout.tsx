@@ -54,8 +54,8 @@ const StyledDrawer = styled(Drawer, {
 }));
 
 export default function AccountLayout() {
-  const { md } = useBreakpoints();
-  const [isOpen, setOpen] = useState(true);
+  const { md, xl } = useBreakpoints();
+  const [isOpen, setOpen] = useState(xl);
 
   const closeDrawer = () => {
     setOpen(false);
