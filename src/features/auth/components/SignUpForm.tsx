@@ -33,7 +33,7 @@ export default function SignUpForm() {
       component="form"
       noValidate
       onSubmit={handleSubmit(onSubmit)}
-      sx={{ width: "100%" }}
+      sx={{ width: "100%", mt: 3 }}
     >
       <Controller
         name="name"

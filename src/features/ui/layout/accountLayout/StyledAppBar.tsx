@@ -18,7 +18,7 @@ export default function StyledAppBar({ onClick }: Props) {
   return (
     <AppBar
       position="fixed"
-      sx={{ boxShadow: "none", background: "transparent" }}
+      sx={{ boxShadow: "none", background: Colors.white }}
     >
       <Toolbar
         sx={{

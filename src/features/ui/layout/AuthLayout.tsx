@@ -2,11 +2,11 @@ import { Outlet, useLocation } from "react-router-dom";
 
 import { Box, Grid, Typography } from "@mui/material";
 
-import { Colors } from "@config/styles";
 import LoginBackground from "@features/auth/assets/login-background.jpg";
 import SignUpBackground from "@features/auth/assets/sign-up-background.png";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
+import Divider from "../Divider";
 import Logo from "../logo/Logo";
 
 export default function AuthLayout() {
@@ -18,7 +18,12 @@ export default function AuthLayout() {
     <Grid
       container
       component="main"
-      sx={{ height: "100vh", position: "relative" }}
+      sx={{
+        minHeight: "100vh",
+        height: "100vh",
+        maxHeight: "-webkit-fill-available",
+        position: "relative",
+      }}
     >
       <Grid
         item
@@ -82,14 +87,7 @@ export default function AuthLayout() {
           <Typography variant="h1" color="text.secondary" mb={3}>
             {isLoginPage ? "Welcome back!" : "Get more opportunities!"}
           </Typography>
-          <Box
-            sx={{
-              height: "1px",
-              bgcolor: Colors.primaryGrey,
-              width: "100%",
-              mb: 3,
-            }}
-          />
+          <Divider />
           <Outlet />
         </Box>
       </Grid>

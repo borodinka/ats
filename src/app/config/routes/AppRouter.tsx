@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 
 import AuthLayout from "@features/ui/layout/AuthLayout";
 import AccountLayout from "@features/ui/layout/accountLayout/AccountLayout";
-import AddJob from "@pages/account/addJob";
+import AddJob from "@pages/account/add-job";
 import Applicants from "@pages/account/applicants";
 import Dashboard from "@pages/account/dashboard";
 import Jobs from "@pages/account/jobs";
