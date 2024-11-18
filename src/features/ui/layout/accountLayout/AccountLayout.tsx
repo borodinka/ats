@@ -54,8 +54,8 @@ const StyledDrawer = styled(Drawer, {
 }));
 
 export default function AccountLayout() {
-  const { md, xl } = useBreakpoints();
-  const [isOpen, setOpen] = useState(xl);
+  const { md, lg } = useBreakpoints();
+  const [isOpen, setOpen] = useState(lg);
 
   const closeDrawer = () => {
     setOpen(false);
@@ -66,7 +66,14 @@ export default function AccountLayout() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box
+      sx={{
+        display: "flex",
+        minHeight: "100vh",
+        height: "100vh",
+        maxHeight: "-webkit-fill-available",
+      }}
+    >
       {/* Desktop */}
       {md && (
         <>
@@ -106,8 +113,6 @@ export default function AccountLayout() {
         component="main"
         sx={{
           width: "100%",
-          minHeight: "100vh",
-          height: "auto",
           px: {
             xs: 2,
             md: 4,
