@@ -49,6 +49,11 @@ export default function JobInfo() {
   });
   const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data);
   const { md } = useBreakpoints();
+  const BOX_STYLES = {
+    display: "flex",
+    gap: !md ? 2 : 15,
+    flexDirection: !md ? "column" : "row",
+  };
 
   return (
     <Stack
@@ -63,11 +68,7 @@ export default function JobInfo() {
         control={control}
         rules={{ required: "Please specify job title" }}
         render={({ field: { ref, ...field }, fieldState }) => (
-          <Box
-            display="flex"
-            gap={!md ? 2 : 15}
-            flexDirection={!md ? "column" : "row"}
-          >
+          <Box sx={BOX_STYLES}>
             <GuideText
               title="Job Title"
               subtitle="Specify the title of the position to clearly define the role"
@@ -115,11 +116,7 @@ export default function JobInfo() {
             value?.length > 0 || "Please select type of employment",
         }}
         render={({ field: { value, ...field }, fieldState }) => (
-          <Box
-            display="flex"
-            gap={!md ? 2 : 15}
-            flexDirection={!md ? "column" : "row"}
-          >
+          <Box sx={BOX_STYLES}>
             <GuideText
               title="Type of Employment"
               subtitle="You can select multiple type of employment"
@@ -174,11 +171,7 @@ export default function JobInfo() {
           validate: (value) => value.length > 0 || "Please select job category",
         }}
         render={({ field: { value, ...field }, fieldState }) => (
-          <Box
-            display="flex"
-            gap={!md ? 2 : 15}
-            flexDirection={!md ? "column" : "row"}
-          >
+          <Box sx={BOX_STYLES}>
             <GuideText
               title="Categories"
               subtitle="You can select multiple job categories"
@@ -245,11 +238,7 @@ export default function JobInfo() {
             "Please select a valid salary range",
         }}
         render={({ field: { value, ...field }, fieldState }) => (
-          <Box
-            display="flex"
-            gap={!md ? 2 : 15}
-            flexDirection={!md ? "column" : "row"}
-          >
+          <Box sx={BOX_STYLES}>
             <GuideText
               title="Salary"
               subtitle="Please specify the estimated salary range for the role"
@@ -288,55 +277,36 @@ export default function JobInfo() {
         )}
       />
       <Divider />
-      <Controller
+      <CustomSelect
+        id="requiredSkills"
         name="requiredSkills"
         control={control}
-        rules={{
-          validate: (value) =>
-            value.length > 0 || "Please select required skills",
-        }}
-        render={({ field: { value, ...field }, fieldState }) => (
-          <Box
-            display="flex"
-            gap={!md ? 2 : 15}
-            flexDirection={!md ? "column" : "row"}
-          >
-            <GuideText
-              title="Required Skills"
-              subtitle="Add required skills for the job"
-            />
-            <CustomSelect
-              id="requiredSkills"
-              fieldState={fieldState}
-              field={field}
-              value={value}
-              items={skills.map((skill) => skill)}
-              buttonText="Skills"
-              isLarge
-            >
-              {value.map((skill) => (
-                <Chip
-                  key={skill}
-                  label={skill}
-                  onDelete={() => {
-                    const updatedValue = value.filter((item) => item !== skill);
-                    field.onChange(updatedValue);
-                  }}
-                  deleteIcon={<CloseIcon />}
-                  sx={{
-                    backgroundColor: Colors.lightViolet,
+        title="Required Skills"
+        subtitle="Add required skills for the job"
+        requireErrorText="required skills"
+        buttonText="Skills"
+        items={skills.map((skill) => skill)}
+        renderSelectedItem={(item, removeItem) => {
+          return (
+            typeof item === "string" && (
+              <Chip
+                key={item}
+                label={item}
+                onDelete={() => removeItem(item)}
+                deleteIcon={<CloseIcon />}
+                sx={{
+                  backgroundColor: Colors.lightViolet,
+                  color: "primary.main",
+                  borderRadius: 0,
+                  ".MuiChip-deleteIcon": {
                     color: "primary.main",
-                    borderRadius: 0,
-                    ".MuiChip-deleteIcon": {
-                      color: "primary.main",
-                      fontSize: 18,
-                    },
-                  }}
-                />
-              ))}
-            </CustomSelect>
-          </Box>
-        )}
+                    fontSize: 18,
+                  },
+                }}
+              />
+            )
+          );
+        }}
       />
       <Divider />
       <Pagination />
