@@ -1,3 +1,5 @@
+import JobList from "../list/components/JobList";
+
 export default function Jobs() {
-  return <div>Jobs</div>;
+  return <JobList />;
 }
