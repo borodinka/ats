@@ -1,16 +1,16 @@
 import { Route, Routes } from "react-router-dom";
 
+import Applicants from "@features/applicant/pages/applicants";
+import Login from "@features/auth/pages/login";
+import SignUp from "@features/auth/pages/sign-up";
+import Schedule from "@features/calendar/schedule";
+import Dashboard from "@features/dashboard/dashboard";
+import Home from "@features/home/pages/home";
+import NotFound from "@features/home/pages/not-found";
+import AddJob from "@features/job/pages/add-job";
+import Jobs from "@features/job/pages/jobs";
 import AuthLayout from "@features/ui/layout/AuthLayout";
 import AccountLayout from "@features/ui/layout/accountLayout/AccountLayout";
-import AddJob from "@pages/account/add-job";
-import Applicants from "@pages/account/applicants";
-import Dashboard from "@pages/account/dashboard";
-import Jobs from "@pages/account/jobs";
-import Schedule from "@pages/account/schedule";
-import Home from "@pages/home";
-import Login from "@pages/login";
-import NotFound from "@pages/not-found";
-import SignUp from "@pages/sign-up";
 
 import { AppRoutes } from "./AppRoutes";
 
