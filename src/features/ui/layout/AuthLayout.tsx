@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { Box, Grid, Typography } from "@mui/material";
 
 import LoginBackground from "@features/auth/assets/login-background.jpg";
-import SignUpBackground from "@features/auth/assets/sign-up-background.png";
+import SignUpBackground from "@features/auth/assets/sign-up-background.jpg";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
 import Divider from "../Divider";

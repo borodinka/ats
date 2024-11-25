@@ -5,7 +5,7 @@ interface FormFields {
   title: string;
   subtitle: string;
   placeholder: string;
-  rules: { required: string };
+  requireErrorText: string;
 }
 
 export const FORM_FIELDS: FormFields[] = [
@@ -15,21 +15,21 @@ export const FORM_FIELDS: FormFields[] = [
     subtitle:
       "Provide a detailed overview of the role, including its purpose, scope, and key objectives",
     placeholder: "job description",
-    rules: { required: "Please specify job description" },
+    requireErrorText: "Please specify job description",
   },
   {
     name: "responsibilities",
     title: "Responsibilities",
     subtitle: "Outline the core responsibilities of the position",
     placeholder: "job responsibilities",
-    rules: { required: "Please specify responsibilities" },
+    requireErrorText: "Please specify responsibilities",
   },
   {
     name: "qualifications",
     title: "Who You Are",
     subtitle: "Add your preferred candidates qualifications",
     placeholder: "qualifications",
-    rules: { required: "Please specify qualifications" },
+    requireErrorText: "Please specify qualifications",
   },
   {
     name: "niceToHaves",
@@ -37,6 +37,6 @@ export const FORM_FIELDS: FormFields[] = [
     subtitle:
       "Add nice-to-have skills and qualifications for the role to encourage a more diverse set of candidates to apply",
     placeholder: "nice-to-haves",
-    rules: { required: "Please specify nice-to-haves" },
+    requireErrorText: "Please specify nice-to-haves",
   },
 ];

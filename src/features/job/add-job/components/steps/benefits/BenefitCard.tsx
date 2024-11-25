@@ -1,5 +1,3 @@
-import { type Noop, type RefCallBack } from "react-hook-form";
-
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, IconButton, Typography } from "@mui/material";
 
@@ -10,19 +8,11 @@ import { PerksBenefits } from "../benefits/data";
 
 interface Props {
   key: React.Key;
-  field: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onChange: (...event: any[]) => void;
-    onBlur: Noop;
-    disabled?: boolean;
-    name: string;
-    ref: RefCallBack;
-  };
-  value: PerksBenefits[];
   val: PerksBenefits;
+  onClose?: () => void;
 }
 
-export default function BenefitCard({ value, val, field }: Props) {
+export default function BenefitCard({ val, onClose }: Props) {
   const { md } = useBreakpoints();
 
   return (
@@ -44,12 +34,7 @@ export default function BenefitCard({ value, val, field }: Props) {
       >
         {val.Icon && <val.Icon />}
         <IconButton
-          onClick={() => {
-            const updatedValue = value.filter(
-              (item) => item.title !== val.title,
-            );
-            field.onChange(updatedValue);
-          }}
+          onClick={onClose}
           sx={{
             color: "text.secondary",
             padding: 0,
