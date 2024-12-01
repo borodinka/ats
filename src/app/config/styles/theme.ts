@@ -31,6 +31,7 @@ const theme = createTheme({
         notchedOutline: {
           borderColor: Colors.primaryGrey,
           borderRadius: 0,
+          borderWidth: "1.5px",
         },
       },
     },

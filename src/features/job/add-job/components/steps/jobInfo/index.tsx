@@ -26,6 +26,7 @@ import { useBreakpoints } from "@hooks/useBreakpoints";
 import Pagination from "../../navigation/Pagination";
 import CustomSelect from "../ui/CustomSelect";
 import GuideText from "../ui/GuideText";
+import { isObjectItem } from "../utils";
 import ValueBlock from "./ValueBlock";
 import { jobCategories, skills, typesOfEmployment } from "./data";
 
@@ -85,12 +86,6 @@ export default function JobInfo() {
                 error={Boolean(fieldState.error)}
                 helperText={fieldState.error?.message}
                 autoFocus
-                sx={{
-                  ".MuiOutlinedInput-notchedOutline": {
-                    borderColor: Colors.primaryGrey,
-                    borderWidth: "1.5px",
-                  },
-                }}
                 {...field}
               />
               {!fieldState.error?.message && (
@@ -182,12 +177,6 @@ export default function JobInfo() {
             >
               <Select
                 id="categories"
-                sx={{
-                  ".MuiOutlinedInput-notchedOutline": {
-                    borderColor: Colors.primaryGrey,
-                    borderWidth: "1.5px",
-                  },
-                }}
                 multiple
                 displayEmpty
                 value={value}
@@ -288,7 +277,7 @@ export default function JobInfo() {
         items={skills.map((skill) => skill)}
         renderSelectedItem={(item, removeItem) => {
           return (
-            typeof item === "string" && (
+            !isObjectItem(item) && (
               <Chip
                 key={item}
                 label={item}
