@@ -25,7 +25,9 @@
     "paths": {
       "@features/*": ["src/features/*"],
       "@config/*": ["src/app/config/*"],
-      "@hooks/*": ["src/app/hooks/*"]
+      "@hooks/*": ["src/app/hooks/*"],
+      "@store/*": ["src/app/store/*"],
+      "@services/*": ["src/app/services/*"]
     }
   },
   "include": ["src"]

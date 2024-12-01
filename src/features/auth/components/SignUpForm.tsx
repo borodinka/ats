@@ -1,4 +1,5 @@
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
+import { Navigate } from "react-router-dom";
 
 import {
   Box,
@@ -12,6 +13,11 @@ import {
 
 import { AppRoutes } from "@config/routes";
 import AppButton from "@features/ui/AppButton";
+import { auth } from "@services/firebase";
+import { useAppDispatch, useAppSelector } from "@store/index";
+
+import { selectUser, setUserName } from "../store/authSlice";
+import { registerUser } from "../store/authThunk";
 
 interface FormInput {
   name: string;
@@ -20,13 +26,12 @@ interface FormInput {
 }
 
 export default function SignUpForm() {
-  const { handleSubmit, control } = useForm<FormInput>({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-  const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data);
+  const user = useAppSelector(selectUser);
+  const { handleSubmit, control, onSubmit } = useSignUpForm();
+
+  if (user) {
+    return <Navigate to={AppRoutes.dashboard} replace />;
+  }
 
   return (
     <Box
@@ -118,4 +123,28 @@ export default function SignUpForm() {
       </Stack>
     </Box>
   );
+}
+
+function useSignUpForm() {
+  const dispatch = useAppDispatch();
+  const { handleSubmit, control } = useForm<FormInput>({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit: SubmitHandler<FormInput> = async (data) => {
+    await dispatch(
+      registerUser({
+        full_name: data.name,
+        email: data.email,
+        password: data.password,
+      }),
+    ).unwrap();
+    dispatch(setUserName(auth.currentUser?.displayName));
+  };
+
+  return { handleSubmit, control, onSubmit };
 }
