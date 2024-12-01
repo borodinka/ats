@@ -6,8 +6,9 @@ import Divider from "@features/ui/Divider";
 
 import Pagination from "../../navigation/Pagination";
 import CustomSelect from "../ui/CustomSelect";
+import { isObjectItem } from "../utils";
 import BenefitCard from "./BenefitCard";
-import { PERKS_BENEFITS, PerksBenefits } from "./data";
+import { PERKS_BENEFITS, type PerksBenefits } from "./data";
 
 interface FormInput {
   perksBenefits: PerksBenefits[];
@@ -39,12 +40,11 @@ export default function Benefits() {
         requireErrorText="perks and benefits"
         buttonText="Benefit"
         items={PERKS_BENEFITS}
-        isLarge
         renderSelectedItem={(item, removeItem) => {
           return (
-            typeof item !== "string" && (
+            isObjectItem(item) && (
               <BenefitCard
-                key={(item as PerksBenefits).title}
+                key={item.id}
                 val={item as PerksBenefits}
                 onClose={() => removeItem(item)}
               />

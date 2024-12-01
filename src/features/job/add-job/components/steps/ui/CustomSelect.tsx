@@ -11,10 +11,9 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Colors } from "@config/styles";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
-import { PerksBenefits } from "../benefits/data";
+import { type ObjectType, isObjectItem } from "../utils";
 import GuideText from "./GuideText";
 
 interface Props {
@@ -23,34 +22,28 @@ interface Props {
   requireErrorText: string;
   title: string;
   subtitle: string;
-  isLarge?: boolean;
   buttonText: string;
-  items: (string | PerksBenefits)[];
+  items: ObjectType[];
   name: string;
   id: string;
   renderSelectedItem: (
-    item: string | PerksBenefits,
-    removeItem: (item: string | PerksBenefits) => void,
+    item: ObjectType,
+    removeItem: (item: ObjectType) => void,
   ) => React.ReactNode;
+  maxAmount?: number;
 }
-
 export default function CustomSelect({
   id,
   control,
   requireErrorText,
   title,
   subtitle,
-  isLarge,
   buttonText,
   items,
   name,
   renderSelectedItem,
+  maxAmount,
 }: Props) {
-  const isPerksBenefit = (
-    item: string | PerksBenefits,
-  ): item is PerksBenefits => {
-    return (item as PerksBenefits).description !== undefined;
-  };
   const { md } = useBreakpoints();
 
   return (
@@ -62,7 +55,7 @@ export default function CustomSelect({
           value.length > 0 || `Please select ${requireErrorText}`,
       }}
       render={({ field: { value, ...field }, fieldState }) => {
-        const typedValue = value as (string | PerksBenefits)[];
+        const typedValue = value as ObjectType[];
         return (
           <Box
             display="flex"
@@ -74,26 +67,24 @@ export default function CustomSelect({
               <Select
                 id={id}
                 sx={{
-                  ".MuiOutlinedInput-notchedOutline": {
-                    borderColor: Colors.primaryGrey,
-                    borderWidth: "1.5px",
-                  },
                   ".MuiSvgIcon-root": {
-                    right: isLarge ? 106 : 90,
+                    right: 106,
                     color: "primary.main",
                     fontSize: 20,
                   },
-                  width: isLarge ? 142 : 126,
+                  width: 142,
                   height: 42,
                 }}
                 multiple
                 displayEmpty
-                value={typedValue.map((v) => (isPerksBenefit(v) ? v.title : v))}
+                value={typedValue.map((item) =>
+                  isObjectItem(item) ? item.title : item,
+                )}
                 onChange={(event) => {
                   const selectedValues = event.target.value;
                   const selectedItems = items.filter((item) =>
                     selectedValues.includes(
-                      isPerksBenefit(item) ? item.title : item,
+                      isObjectItem(item) ? item.title : item,
                     ),
                   );
                   field.onChange(selectedItems);
@@ -113,10 +104,15 @@ export default function CustomSelect({
               >
                 {items.map((item) => (
                   <MenuItem
-                    key={isPerksBenefit(item) ? item.title : item}
-                    value={isPerksBenefit(item) ? item.title : item}
+                    key={isObjectItem(item) ? item.title : item}
+                    value={isObjectItem(item) ? item.title : item}
+                    disabled={
+                      maxAmount !== undefined &&
+                      typedValue.length >= maxAmount &&
+                      !typedValue.includes(item)
+                    }
                   >
-                    {isPerksBenefit(item) ? item.title : item}
+                    {isObjectItem(item) ? item.title : item}
                   </MenuItem>
                 ))}
               </Select>

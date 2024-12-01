@@ -55,12 +55,6 @@ export default function TextInputSection({
               inputProps={{ maxLength: 500 }}
               error={Boolean(fieldState.error)}
               helperText={fieldState.error?.message}
-              sx={{
-                ".MuiOutlinedInput-notchedOutline": {
-                  borderColor: Colors.primaryGrey,
-                  borderWidth: "1.5px",
-                },
-              }}
               {...field}
             />
             {!fieldState.error?.message && (

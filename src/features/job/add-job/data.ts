@@ -3,10 +3,10 @@ import BallotOutlinedIcon from "@mui/icons-material/BallotOutlined";
 import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
 import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
 
-import RecruitmentStages from "./components/steps/RecruitmentStages";
 import Benefits from "./components/steps/benefits";
 import JobDescription from "./components/steps/jobDescription";
 import JobInfo from "./components/steps/jobInfo";
+import RecruitmentStages from "./components/steps/recruitmentStages";
 import { WizardSteps } from "./types";
 
 export const WIZARD_STEPS: WizardSteps[] = [
