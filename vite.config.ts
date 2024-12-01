@@ -11,6 +11,8 @@ export default defineConfig({
       "@features": path.resolve(__dirname, "./src/features"),
       "@config": path.resolve(__dirname, "./src/app/config"),
       "@hooks": path.resolve(__dirname, "./src/app/hooks"),
+      "@store": path.resolve(__dirname, "./src/app/store"),
+      "@services": path.resolve(__dirname, "./src/app/services"),
     },
   },
   plugins: [
