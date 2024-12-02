@@ -15,9 +15,11 @@ import {
 
 import { AppRoutes } from "@config/routes";
 import { Colors, theme } from "@config/styles";
+import { selectUser } from "@features/auth/store/authSlice";
 import AppButton from "@features/ui/AppButton";
 import Logo from "@features/ui/logo/Logo";
 import { useBreakpoints } from "@hooks/useBreakpoints";
+import { useAppSelector } from "@store/index";
 
 import { ACCOUNT_LINKS } from "./data";
 
@@ -33,6 +35,9 @@ export default function AccountSidebar({
   onClick,
 }: Props) {
   const { md } = useBreakpoints();
+  const user = useAppSelector(selectUser);
+  const userInitial = user?.displayName?.[0];
+  const userFullName = user?.displayName;
 
   const onLinkClick = () => {
     if (!md) {
@@ -132,11 +137,11 @@ export default function AccountSidebar({
               background: theme.palette.primary.main,
             }}
           >
-            J
+            {userInitial}
           </Avatar>
           {!isMinimized && (
             <Typography color="text.secondary" variant="h4">
-              John Doe
+              {userFullName}
             </Typography>
           )}
         </Stack>

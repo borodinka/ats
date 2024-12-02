@@ -16,7 +16,7 @@ import AppButton from "@features/ui/AppButton";
 import { auth } from "@services/firebase";
 import { useAppDispatch, useAppSelector } from "@store/index";
 
-import { selectUser, setUserName } from "../store/authSlice";
+import { selectAuth, selectUser, setUserName } from "../store/authSlice";
 import { registerUser } from "../store/authThunk";
 
 interface FormInput {
@@ -27,6 +27,7 @@ interface FormInput {
 
 export default function SignUpForm() {
   const user = useAppSelector(selectUser);
+  const auth = useAppSelector(selectAuth);
   const { handleSubmit, control, onSubmit } = useSignUpForm();
 
   if (user) {
@@ -108,7 +109,13 @@ export default function SignUpForm() {
           </FormControl>
         )}
       />
-      <AppButton type="submit" fullWidth variant="contained" sx={{ mb: 3 }}>
+      <AppButton
+        loading={auth.status === "loading"}
+        type="submit"
+        fullWidth
+        variant="contained"
+        sx={{ mb: 3 }}
+      >
         Continue
       </AppButton>
       <Stack direction="row" spacing={1}>
