@@ -12,7 +12,8 @@ import Jobs from "@features/job/pages/jobs";
 import AuthLayout from "@features/ui/layout/AuthLayout";
 import AccountLayout from "@features/ui/layout/accountLayout/AccountLayout";
 
-import { AppRoutes } from "./AppRoutes";
+import { AppRoutes } from "../AppRoutes";
+import ProtectedRoute from "./ProtectedRoute";
 
 export default function AppRouter() {
   return (
@@ -24,7 +25,13 @@ export default function AppRouter() {
         <Route path={AppRoutes.login} element={<Login />} />
       </Route>
       {/* Account */}
-      <Route element={<AccountLayout />}>
+      <Route
+        element={
+          <ProtectedRoute>
+            <AccountLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route path={AppRoutes.dashboard} element={<Dashboard />} />
         <Route path={AppRoutes.applicants} element={<Applicants />} />
         <Route path={AppRoutes.jobs} element={<Jobs />} />

@@ -1,4 +1,5 @@
-import { Button, type SxProps, type Theme, Typography } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { type SxProps, type Theme, Typography } from "@mui/material";
 
 interface Props {
   type?: "button" | "submit" | "reset";
@@ -8,6 +9,7 @@ interface Props {
   LinkComponent?: React.ElementType;
   href?: string;
   onClick?: () => void;
+  loading?: boolean;
   sx?: SxProps<Theme>;
 }
 
@@ -19,21 +21,23 @@ export default function AppButton({
   LinkComponent,
   href,
   onClick,
+  loading,
   sx,
 }: Props) {
   return (
-    <Button
+    <LoadingButton
       LinkComponent={LinkComponent}
       href={href}
       type={type}
       variant={variant}
       fullWidth={fullWidth}
       onClick={onClick}
+      loading={loading}
       sx={{ height: 50, textTransform: "none", ...sx }}
     >
       <Typography component="span" variant="body2">
         {children}
       </Typography>
-    </Button>
+    </LoadingButton>
   );
 }

@@ -15,11 +15,11 @@ import { useBreakpoints } from "@hooks/useBreakpoints";
 import AccountSidebar from "./AccountSidebar";
 import StyledAppBar from "./StyledAppBar";
 
-const DESKTOP_DRAWER_WIDTH = 272;
+const DRAWER_WIDTH = 272;
 const DESKTOP_MINIMIZED_DRAWER_WIDTH = 94;
 
 const openedMixin = (theme: Theme): CSSObject => ({
-  width: DESKTOP_DRAWER_WIDTH,
+  width: DRAWER_WIDTH,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -39,7 +39,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 const StyledDrawer = styled(Drawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
-  width: DESKTOP_DRAWER_WIDTH,
+  width: DRAWER_WIDTH,
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
@@ -101,7 +101,7 @@ export default function AccountLayout() {
             sx={{
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
-                width: DESKTOP_DRAWER_WIDTH,
+                width: DRAWER_WIDTH,
               },
             }}
           >
