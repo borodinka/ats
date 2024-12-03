@@ -69,9 +69,9 @@ export default function AccountLayout() {
     <Box
       sx={{
         display: "flex",
-        minHeight: "100vh",
-        height: "100vh",
-        maxHeight: "-webkit-fill-available",
+        minHeight: { md: "100vh" },
+        height: { xs: "100vh", md: "auto" },
+        maxHeight: { xs: "-webkit-fill-available", md: "auto" },
       }}
     >
       {/* Desktop */}

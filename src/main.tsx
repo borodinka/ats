@@ -7,6 +7,6 @@ import App from "./app/App.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
-    <App />,
+    <App />
   </Provider>,
 );

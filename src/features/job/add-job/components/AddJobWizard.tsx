@@ -35,8 +35,8 @@ export default function AddJobWizard() {
         <Box
           sx={{
             overflowY: "scroll",
-            maxHeight: "68vh",
-            minHeight: "68vh",
+            minHeight: { xs: "52vh", md: "auto" },
+            maxHeight: { xs: "52vh", md: "65vh" },
             mt: 3,
           }}
         >

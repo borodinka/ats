@@ -21,7 +21,7 @@ export const WIZARD_STEPS: WizardSteps[] = [
     Component: JobDescription,
   },
   {
-    title: "Perks & Benefit",
+    title: "Perks & Benefits",
     Icon: CardGiftcardOutlinedIcon,
     Component: Benefits,
   },
