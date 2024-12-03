@@ -23,32 +23,24 @@ import { Colors, theme } from "@config/styles";
 import Divider from "@features/ui/Divider";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
+import { jobCategories, skills, typesOfEmployment } from "../../../../data";
+import type { Job } from "../../../../types";
 import Pagination from "../../navigation/Pagination";
 import CustomSelect from "../ui/CustomSelect";
 import GuideText from "../ui/GuideText";
-import { isObjectItem } from "../utils";
+import { isCustomSelectObject } from "../utils";
 import ValueBlock from "./ValueBlock";
-import { jobCategories, skills, typesOfEmployment } from "./data";
 
 interface FormInput {
-  title: string;
-  employmentTypes: string[];
-  salary: [number, number];
-  categories: string[];
-  requiredSkills: string[];
+  title: Job["title"];
+  employmentTypes: Job["employmentTypes"];
+  salary: Job["salary"];
+  categories: Job["categories"];
+  requiredSkills: Job["requiredSkills"];
 }
 
 export default function JobInfo() {
-  const { handleSubmit, control } = useForm<FormInput>({
-    defaultValues: {
-      title: "",
-      employmentTypes: [],
-      salary: [35000, 80000],
-      categories: [],
-      requiredSkills: [],
-    },
-  });
-  const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data);
+  const { handleSubmit, control, onSubmit } = useJobInfoForm();
   const { md } = useBreakpoints();
   const BOX_STYLES = {
     display: "flex",
@@ -149,6 +141,7 @@ export default function JobInfo() {
                       ml: !md ? "4px" : "8px",
                     },
                   }}
+                  {...field}
                 />
               ))}
               <FormHelperText error={Boolean(fieldState.error)}>
@@ -277,7 +270,7 @@ export default function JobInfo() {
         items={skills.map((skill) => skill)}
         renderSelectedItem={(item, removeItem) => {
           return (
-            !isObjectItem(item) && (
+            !isCustomSelectObject(item) && (
               <Chip
                 key={item}
                 label={item}
@@ -301,4 +294,23 @@ export default function JobInfo() {
       <Pagination />
     </Stack>
   );
+}
+
+function useJobInfoForm() {
+  const { handleSubmit, control } = useForm<FormInput>({
+    defaultValues: {
+      title: "",
+      employmentTypes: [],
+      salary: [35000, 80000],
+      categories: [],
+      requiredSkills: [],
+    },
+  });
+  const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data);
+
+  return {
+    handleSubmit,
+    control,
+    onSubmit,
+  };
 }

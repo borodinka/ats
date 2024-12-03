@@ -4,11 +4,11 @@ import { Box, IconButton, Typography } from "@mui/material";
 import { Colors } from "@config/styles";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
-import { PerksBenefits } from "../benefits/data";
+import type { PerkBenefit } from "../../../../types";
 
 interface Props {
   key: React.Key;
-  val: PerksBenefits;
+  val: PerkBenefit;
   onClose?: () => void;
 }
 
@@ -35,6 +35,7 @@ export default function BenefitCard({ val, onClose }: Props) {
         {val.Icon && <val.Icon />}
         <IconButton
           onClick={onClose}
+          aria-label="remove benefit card"
           sx={{
             color: "text.secondary",
             padding: 0,

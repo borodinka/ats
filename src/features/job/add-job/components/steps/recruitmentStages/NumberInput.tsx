@@ -64,6 +64,7 @@ export default function NumberInput({
               <IconButton
                 onClick={() => field.onChange(Math.max(value - 1, 1))}
                 disabled={value <= 1}
+                aria-label="decrease value"
                 sx={{
                   color: theme.palette.primary.main,
                 }}
@@ -74,6 +75,7 @@ export default function NumberInput({
               <IconButton
                 onClick={() => field.onChange(Math.min(value + 1, maxValue))}
                 disabled={value >= maxValue}
+                aria-label="increase value"
                 sx={{
                   color: theme.palette.primary.main,
                 }}

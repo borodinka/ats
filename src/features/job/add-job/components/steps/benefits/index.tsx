@@ -4,24 +4,19 @@ import { Stack } from "@mui/material";
 
 import Divider from "@features/ui/Divider";
 
+import { type Job, type PerkBenefit } from "../../../../types";
 import Pagination from "../../navigation/Pagination";
 import CustomSelect from "../ui/CustomSelect";
-import { isObjectItem } from "../utils";
+import { isCustomSelectObject } from "../utils";
 import BenefitCard from "./BenefitCard";
-import { PERKS_BENEFITS, type PerksBenefits } from "./data";
+import { PERKS_BENEFITS } from "./data";
 
 interface FormInput {
-  perksBenefits: PerksBenefits[];
+  perksBenefits: Job["perksBenefits"];
 }
 
 export default function Benefits() {
-  const { handleSubmit, control } = useForm<FormInput>({
-    defaultValues: {
-      perksBenefits: [],
-    },
-  });
-  const onSubmit: SubmitHandler<FormInput> = (data) =>
-    console.log(data.perksBenefits);
+  const { handleSubmit, control, onSubmit } = useBenefitsForm();
 
   return (
     <Stack
@@ -42,10 +37,10 @@ export default function Benefits() {
         items={PERKS_BENEFITS}
         renderSelectedItem={(item, removeItem) => {
           return (
-            isObjectItem(item) && (
+            isCustomSelectObject(item) && (
               <BenefitCard
                 key={item.id}
-                val={item as PerksBenefits}
+                val={item as PerkBenefit}
                 onClose={() => removeItem(item)}
               />
             )
@@ -56,4 +51,20 @@ export default function Benefits() {
       <Pagination />
     </Stack>
   );
+}
+
+function useBenefitsForm() {
+  const { handleSubmit, control } = useForm<FormInput>({
+    defaultValues: {
+      perksBenefits: [],
+    },
+  });
+  const onSubmit: SubmitHandler<FormInput> = (data) =>
+    console.log(data.perksBenefits);
+
+  return {
+    handleSubmit,
+    control,
+    onSubmit,
+  };
 }

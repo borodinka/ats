@@ -16,11 +16,11 @@ import {
 import { Colors } from "@config/styles";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
-import { type RecruitmentStages } from "./data";
+import type { RecruitmentStage } from "../../../../types";
 
 interface Props {
   key: React.Key;
-  stage: RecruitmentStages;
+  stage: RecruitmentStage;
   onClose: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any, unknown>;
@@ -76,6 +76,7 @@ export default function StageCard({
           <Typography color="text.secondary">{stage.title}</Typography>
           <IconButton
             onClick={onClose}
+            aria-label="remove stage card"
             sx={{
               position: "absolute",
               top: 8,

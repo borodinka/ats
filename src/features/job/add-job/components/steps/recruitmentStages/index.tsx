@@ -11,46 +11,29 @@ import { Stack } from "@mui/material";
 
 import Divider from "@features/ui/Divider";
 
+import { type Job, type RecruitmentStage } from "../../../../types";
 import Pagination from "../../navigation/Pagination";
 import CustomSelect from "../ui/CustomSelect";
-import { isObjectItem } from "../utils";
+import { isCustomSelectObject } from "../utils";
 import NumberInput from "./NumberInput";
 import StageCard from "./StageCard";
-import { RECRUITMENT_STAGES, type RecruitmentStages } from "./data";
+import { RECRUITMENT_STAGES } from "./data";
 
 interface FormInput {
-  numberOfStages: number;
-  stages: RecruitmentStages[];
-  capacity: number;
+  numberOfStages: Job["numberOfStages"];
+  stages: Job["stages"];
+  capacity: Job["capacity"];
 }
 
 export default function RecruitmentStages() {
-  const { handleSubmit, control, watch, setValue } = useForm<FormInput>({
-    defaultValues: {
-      numberOfStages: 0,
-      stages: [],
-      capacity: 0,
-    },
-  });
-  const numberOfStages = watch("numberOfStages");
-  const selectedStages = watch("stages");
-  const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data);
-
-  const onDragEnd = ({ destination, source }: DropResult) => {
-    if (!destination) return;
-    if (source.index === destination.index) return;
-
-    const reorderedStages = Array.from(selectedStages);
-    const [removed] = reorderedStages.splice(source.index, 1);
-    reorderedStages.splice(destination.index, 0, removed);
-    setValue("stages", reorderedStages);
-  };
-
-  useEffect(() => {
-    if (selectedStages.length > numberOfStages) {
-      setValue("stages", selectedStages.slice(0, numberOfStages));
-    }
-  }, [numberOfStages, selectedStages, setValue]);
+  const {
+    handleSubmit,
+    control,
+    numberOfStages,
+    selectedStages,
+    onSubmit,
+    onDragEnd,
+  } = useRecruitmentStagesForm();
 
   return (
     <Stack
@@ -84,14 +67,14 @@ export default function RecruitmentStages() {
                 items={RECRUITMENT_STAGES}
                 maxAmount={numberOfStages}
                 renderSelectedItem={(item, removeItem) => {
-                  if (isObjectItem(item)) {
+                  if (isCustomSelectObject(item)) {
                     const index = selectedStages.findIndex(
                       (s) => s.id === item.id,
                     );
                     return (
                       <Draggable
                         key={item.id}
-                        draggableId={String(item.id)}
+                        draggableId={item.id}
                         index={index}
                       >
                         {(provided) => (
@@ -102,7 +85,7 @@ export default function RecruitmentStages() {
                           >
                             <StageCard
                               key={item.id}
-                              stage={item as RecruitmentStages}
+                              stage={item as RecruitmentStage}
                               onClose={() => removeItem(item)}
                               control={control}
                               index={index}
@@ -134,4 +117,44 @@ export default function RecruitmentStages() {
       <Pagination />
     </Stack>
   );
+}
+
+function useRecruitmentStagesForm() {
+  const { handleSubmit, control, watch, setValue } = useForm<FormInput>({
+    defaultValues: {
+      numberOfStages: 0,
+      stages: [],
+      capacity: 0,
+    },
+  });
+
+  const numberOfStages = watch("numberOfStages");
+  const selectedStages = watch("stages");
+
+  const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data);
+
+  const onDragEnd = ({ destination, source }: DropResult) => {
+    if (!destination) return;
+    if (source.index === destination.index) return;
+
+    const reorderedStages = Array.from(selectedStages);
+    const [removed] = reorderedStages.splice(source.index, 1);
+    reorderedStages.splice(destination.index, 0, removed);
+    setValue("stages", reorderedStages);
+  };
+
+  useEffect(() => {
+    if (selectedStages.length > numberOfStages) {
+      setValue("stages", selectedStages.slice(0, numberOfStages));
+    }
+  }, [numberOfStages, selectedStages, setValue]);
+
+  return {
+    handleSubmit,
+    control,
+    numberOfStages,
+    selectedStages,
+    onSubmit,
+    onDragEnd,
+  };
 }

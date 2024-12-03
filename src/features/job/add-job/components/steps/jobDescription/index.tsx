@@ -4,27 +4,20 @@ import { Stack } from "@mui/material";
 
 import Divider from "@features/ui/Divider";
 
+import type { Job } from "../../../../types";
 import Pagination from "../../navigation/Pagination";
 import TextInputSection from "./TextInputSection";
 import { FORM_FIELDS } from "./data";
 
 export interface FormInput {
-  description: string;
-  responsibilities: string;
-  qualifications: string;
-  niceToHaves: string;
+  description: Job["description"];
+  responsibilities: Job["responsibilities"];
+  qualifications: Job["qualifications"];
+  niceToHaves: Job["niceToHaves"];
 }
 
 export default function JobDescription() {
-  const { handleSubmit, control } = useForm<FormInput>({
-    defaultValues: {
-      description: "",
-      responsibilities: "",
-      qualifications: "",
-      niceToHaves: "",
-    },
-  });
-  const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data);
+  const { handleSubmit, control, onSubmit } = useJobDescriptionForm();
 
   return (
     <Stack
@@ -53,4 +46,22 @@ export default function JobDescription() {
       <Pagination />
     </Stack>
   );
+}
+
+function useJobDescriptionForm() {
+  const { handleSubmit, control } = useForm<FormInput>({
+    defaultValues: {
+      description: "",
+      responsibilities: "",
+      qualifications: "",
+      niceToHaves: "",
+    },
+  });
+  const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data);
+
+  return {
+    handleSubmit,
+    control,
+    onSubmit,
+  };
 }
