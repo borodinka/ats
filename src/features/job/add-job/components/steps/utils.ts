@@ -1,10 +1,8 @@
-import { type PerksBenefits } from "./benefits/data";
-import { type RecruitmentStages } from "./recruitmentStages/data";
+import { type PerkBenefit, type RecruitmentStage } from "../../../types";
+import type { CustomSelectType } from "../../types";
 
-export type ObjectType = string | PerksBenefits | RecruitmentStages;
-
-export const isObjectItem = (
-  item: ObjectType,
-): item is PerksBenefits | RecruitmentStages => {
+export const isCustomSelectObject = (
+  item: CustomSelectType,
+): item is PerkBenefit | RecruitmentStage => {
   return typeof item !== "string";
 };

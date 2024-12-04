@@ -13,7 +13,8 @@ import {
 
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
-import { type ObjectType, isObjectItem } from "../utils";
+import type { CustomSelectType } from "../../../types";
+import { isCustomSelectObject } from "../utils";
 import GuideText from "./GuideText";
 
 interface Props {
@@ -23,12 +24,12 @@ interface Props {
   title: string;
   subtitle: string;
   buttonText: string;
-  items: ObjectType[];
+  items: CustomSelectType[];
   name: string;
   id: string;
   renderSelectedItem: (
-    item: ObjectType,
-    removeItem: (item: ObjectType) => void,
+    item: CustomSelectType,
+    removeItem: (item: CustomSelectType) => void,
   ) => React.ReactNode;
   maxAmount?: number;
 }
@@ -51,11 +52,18 @@ export default function CustomSelect({
       name={name}
       control={control}
       rules={{
-        validate: (value) =>
-          value.length > 0 || `Please select ${requireErrorText}`,
+        validate: (value) => {
+          if (value.length === 0) {
+            return `Please select ${requireErrorText}`;
+          }
+          if (maxAmount && value.length !== maxAmount) {
+            return `You need to select exactly ${maxAmount} stages`;
+          }
+          return true;
+        },
       }}
       render={({ field: { value, ...field }, fieldState }) => {
-        const typedValue = value as ObjectType[];
+        const typedValue = value as CustomSelectType[];
         return (
           <Box
             display="flex"
@@ -78,13 +86,13 @@ export default function CustomSelect({
                 multiple
                 displayEmpty
                 value={typedValue.map((item) =>
-                  isObjectItem(item) ? item.title : item,
+                  isCustomSelectObject(item) ? item.title : item,
                 )}
                 onChange={(event) => {
                   const selectedValues = event.target.value;
                   const selectedItems = items.filter((item) =>
                     selectedValues.includes(
-                      isObjectItem(item) ? item.title : item,
+                      isCustomSelectObject(item) ? item.title : item,
                     ),
                   );
                   field.onChange(selectedItems);
@@ -104,15 +112,15 @@ export default function CustomSelect({
               >
                 {items.map((item) => (
                   <MenuItem
-                    key={isObjectItem(item) ? item.title : item}
-                    value={isObjectItem(item) ? item.title : item}
+                    key={isCustomSelectObject(item) ? item.title : item}
+                    value={isCustomSelectObject(item) ? item.title : item}
                     disabled={
                       maxAmount !== undefined &&
                       typedValue.length >= maxAmount &&
                       !typedValue.includes(item)
                     }
                   >
-                    {isObjectItem(item) ? item.title : item}
+                    {isCustomSelectObject(item) ? item.title : item}
                   </MenuItem>
                 ))}
               </Select>

@@ -19,9 +19,9 @@ export default function AuthLayout() {
       container
       component="main"
       sx={{
-        minHeight: "100vh",
-        height: "100vh",
-        maxHeight: "-webkit-fill-available",
+        minHeight: { md: "100vh" },
+        height: { xs: "100vh", md: "auto" },
+        maxHeight: { xs: "-webkit-fill-available", md: "auto" },
         position: "relative",
       }}
     >

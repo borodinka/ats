@@ -1,14 +1,6 @@
-import { FormInput } from ".";
+import type { FormField } from "./types";
 
-interface FormFields {
-  name: keyof FormInput;
-  title: string;
-  subtitle: string;
-  placeholder: string;
-  requireErrorText: string;
-}
-
-export const FORM_FIELDS: FormFields[] = [
+export const FORM_FIELDS: FormField[] = [
   {
     name: "description",
     title: "Description",

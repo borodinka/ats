@@ -33,6 +33,7 @@ export default function JobCard({
         borderColor: Colors.primaryGrey,
         p: 3,
         minHeight: md ? 300 : "auto",
+        height: 1,
       }}
     >
       <Box>

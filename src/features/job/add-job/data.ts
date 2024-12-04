@@ -7,9 +7,9 @@ import Benefits from "./components/steps/benefits";
 import JobDescription from "./components/steps/jobDescription";
 import JobInfo from "./components/steps/jobInfo";
 import RecruitmentStages from "./components/steps/recruitmentStages";
-import { WizardSteps } from "./types";
+import type { WizardStep } from "./types";
 
-export const WIZARD_STEPS: WizardSteps[] = [
+export const WIZARD_STEPS: WizardStep[] = [
   {
     title: "Job Information",
     Icon: BusinessCenterOutlinedIcon,
@@ -21,7 +21,7 @@ export const WIZARD_STEPS: WizardSteps[] = [
     Component: JobDescription,
   },
   {
-    title: "Perks & Benefit",
+    title: "Perks & Benefits",
     Icon: CardGiftcardOutlinedIcon,
     Component: Benefits,
   },

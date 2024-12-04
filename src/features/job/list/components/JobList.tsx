@@ -14,7 +14,7 @@ export default function JobList() {
         spacing={2}
         sx={{
           overflowY: "scroll",
-          maxHeight: "80vh",
+          maxHeight: { xs: "68vh", md: "78vh" },
           minHeight: "auto",
         }}
       >

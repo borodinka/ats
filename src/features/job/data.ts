@@ -4,7 +4,7 @@ export const typesOfEmployment = [
   "Remote",
   "Internship",
   "Contract",
-];
+] as const;
 
 export const jobCategories = [
   "Design",
@@ -14,7 +14,7 @@ export const jobCategories = [
   "Finance",
   "Engineering",
   "Technology",
-];
+] as const;
 
 export const skills = [
   "Project Management",
@@ -26,4 +26,4 @@ export const skills = [
   "Problem Solving",
   "JavaScript",
   "Cybersecurity",
-];
+] as const;

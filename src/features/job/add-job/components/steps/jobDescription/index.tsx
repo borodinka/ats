@@ -3,28 +3,27 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { Stack } from "@mui/material";
 
 import Divider from "@features/ui/Divider";
+import { useAppDispatch, useAppSelector } from "@store/index";
 
+import {
+  nextStep,
+  selectJob,
+  setJobDescription,
+} from "../../../../store/jobSlice";
+import type { Job } from "../../../../types";
 import Pagination from "../../navigation/Pagination";
 import TextInputSection from "./TextInputSection";
 import { FORM_FIELDS } from "./data";
 
 export interface FormInput {
-  description: string;
-  responsibilities: string;
-  qualifications: string;
-  niceToHaves: string;
+  description: Job["description"];
+  responsibilities: Job["responsibilities"];
+  qualifications: Job["qualifications"];
+  niceToHaves: Job["niceToHaves"];
 }
 
 export default function JobDescription() {
-  const { handleSubmit, control } = useForm<FormInput>({
-    defaultValues: {
-      description: "",
-      responsibilities: "",
-      qualifications: "",
-      niceToHaves: "",
-    },
-  });
-  const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data);
+  const { handleSubmit, control, onSubmit } = useJobDescriptionForm();
 
   return (
     <Stack
@@ -53,4 +52,27 @@ export default function JobDescription() {
       <Pagination />
     </Stack>
   );
+}
+
+function useJobDescriptionForm() {
+  const job = useAppSelector(selectJob);
+  const { handleSubmit, control } = useForm<FormInput>({
+    defaultValues: {
+      description: job.description,
+      responsibilities: job.responsibilities,
+      qualifications: job.qualifications,
+      niceToHaves: job.niceToHaves,
+    },
+  });
+  const dispatch = useAppDispatch();
+  const onSubmit: SubmitHandler<FormInput> = (data) => {
+    dispatch(nextStep());
+    dispatch(setJobDescription(data));
+  };
+
+  return {
+    handleSubmit,
+    control,
+    onSubmit,
+  };
 }
