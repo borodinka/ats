@@ -1,6 +1,6 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { RootState } from "@store/index";
+import type { RootState } from "@store/index";
 
 import { loginUser, registerUser } from "./authThunk";
 

@@ -3,7 +3,9 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { Stack } from "@mui/material";
 
 import Divider from "@features/ui/Divider";
+import { useAppDispatch, useAppSelector } from "@store/index";
 
+import { nextStep, selectJob, setBenefits } from "../../../../store/jobSlice";
 import { type Job, type PerkBenefit } from "../../../../types";
 import Pagination from "../../navigation/Pagination";
 import CustomSelect from "../ui/CustomSelect";
@@ -54,13 +56,17 @@ export default function Benefits() {
 }
 
 function useBenefitsForm() {
+  const job = useAppSelector(selectJob);
   const { handleSubmit, control } = useForm<FormInput>({
     defaultValues: {
-      perksBenefits: [],
+      perksBenefits: job.perksBenefits,
     },
   });
-  const onSubmit: SubmitHandler<FormInput> = (data) =>
-    console.log(data.perksBenefits);
+  const dispatch = useAppDispatch();
+  const onSubmit: SubmitHandler<FormInput> = (data) => {
+    dispatch(nextStep());
+    dispatch(setBenefits(data));
+  };
 
   return {
     handleSubmit,

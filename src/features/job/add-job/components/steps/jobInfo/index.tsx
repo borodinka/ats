@@ -22,8 +22,10 @@ import {
 import { Colors, theme } from "@config/styles";
 import Divider from "@features/ui/Divider";
 import { useBreakpoints } from "@hooks/useBreakpoints";
+import { useAppDispatch, useAppSelector } from "@store/index";
 
 import { jobCategories, skills, typesOfEmployment } from "../../../../data";
+import { nextStep, selectJob, setJobInfo } from "../../../../store/jobSlice";
 import type { Job } from "../../../../types";
 import Pagination from "../../navigation/Pagination";
 import CustomSelect from "../ui/CustomSelect";
@@ -297,16 +299,21 @@ export default function JobInfo() {
 }
 
 function useJobInfoForm() {
+  const job = useAppSelector(selectJob);
   const { handleSubmit, control } = useForm<FormInput>({
     defaultValues: {
-      title: "",
-      employmentTypes: [],
-      salary: [35000, 80000],
-      categories: [],
-      requiredSkills: [],
+      title: job.title,
+      employmentTypes: job.employmentTypes,
+      salary: job.salary,
+      categories: job.categories,
+      requiredSkills: job.requiredSkills,
     },
   });
-  const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data);
+  const dispatch = useAppDispatch();
+  const onSubmit: SubmitHandler<FormInput> = (data) => {
+    dispatch(nextStep());
+    dispatch(setJobInfo(data));
+  };
 
   return {
     handleSubmit,

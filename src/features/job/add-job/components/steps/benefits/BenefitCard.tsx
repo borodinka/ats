@@ -5,6 +5,7 @@ import { Colors } from "@config/styles";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
 import type { PerkBenefit } from "../../../../types";
+import { PERKS_ICONS } from "./data";
 
 interface Props {
   key: React.Key;
@@ -14,6 +15,7 @@ interface Props {
 
 export default function BenefitCard({ val, onClose }: Props) {
   const { md } = useBreakpoints();
+  const Icon = PERKS_ICONS[val.iconName];
 
   return (
     <Box
@@ -32,7 +34,7 @@ export default function BenefitCard({ val, onClose }: Props) {
         alignItems="start"
         mb={3}
       >
-        {val.Icon && <val.Icon />}
+        {Icon && <Icon />}
         <IconButton
           onClick={onClose}
           aria-label="remove benefit card"

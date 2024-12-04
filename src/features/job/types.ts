@@ -6,9 +6,18 @@ export type JobCategory = (typeof jobCategories)[number];
 
 export type Skill = (typeof skills)[number];
 
+export type PerkIconName =
+  | "CameraIcon"
+  | "CharityIcon"
+  | "HealthIcon"
+  | "TeaIcon"
+  | "TeamIcon"
+  | "TrainIcon"
+  | "VacationIcon";
+
 export interface PerkBenefit {
   id: string;
-  Icon: string;
+  iconName: PerkIconName;
   title: string;
   description: string;
 }

@@ -3,11 +3,11 @@ import { Box, Step, StepLabel, Stepper, Typography } from "@mui/material";
 import { Colors, theme } from "@config/styles";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
-import type { WizardSteps } from "../../types";
+import type { WizardStep } from "../../types";
 
 interface Props {
   currentStep: number;
-  steps: WizardSteps[];
+  steps: WizardStep[];
 }
 
 export default function StyledStepper({ currentStep, steps }: Props) {

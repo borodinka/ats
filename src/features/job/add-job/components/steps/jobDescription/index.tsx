@@ -3,7 +3,13 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { Stack } from "@mui/material";
 
 import Divider from "@features/ui/Divider";
+import { useAppDispatch, useAppSelector } from "@store/index";
 
+import {
+  nextStep,
+  selectJob,
+  setJobDescription,
+} from "../../../../store/jobSlice";
 import type { Job } from "../../../../types";
 import Pagination from "../../navigation/Pagination";
 import TextInputSection from "./TextInputSection";
@@ -49,15 +55,20 @@ export default function JobDescription() {
 }
 
 function useJobDescriptionForm() {
+  const job = useAppSelector(selectJob);
   const { handleSubmit, control } = useForm<FormInput>({
     defaultValues: {
-      description: "",
-      responsibilities: "",
-      qualifications: "",
-      niceToHaves: "",
+      description: job.description,
+      responsibilities: job.responsibilities,
+      qualifications: job.qualifications,
+      niceToHaves: job.niceToHaves,
     },
   });
-  const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data);
+  const dispatch = useAppDispatch();
+  const onSubmit: SubmitHandler<FormInput> = (data) => {
+    dispatch(nextStep());
+    dispatch(setJobDescription(data));
+  };
 
   return {
     handleSubmit,

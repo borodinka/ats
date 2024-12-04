@@ -2,12 +2,14 @@ import { Box, Stack, Typography } from "@mui/material";
 
 import { Colors } from "@config/styles";
 import Divider from "@features/ui/Divider";
+import { useAppSelector } from "@store/index";
 
+import { selectCurrentStep } from "../../store/jobSlice";
 import { WIZARD_STEPS } from "../data";
 import StyledStepper from "./navigation/StyledStepper";
 
 export default function AddJobWizard() {
-  const currentStep = 0;
+  const currentStep = useAppSelector(selectCurrentStep);
   const stepData = WIZARD_STEPS[currentStep];
   const StepComponent = stepData.Component;
 

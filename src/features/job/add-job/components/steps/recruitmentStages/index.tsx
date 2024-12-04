@@ -10,7 +10,9 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { Stack } from "@mui/material";
 
 import Divider from "@features/ui/Divider";
+import { useAppDispatch, useAppSelector } from "@store/index";
 
+import { selectJob, setRecruitmentStages } from "../../../../store/jobSlice";
 import { type Job, type RecruitmentStage } from "../../../../types";
 import Pagination from "../../navigation/Pagination";
 import CustomSelect from "../ui/CustomSelect";
@@ -120,18 +122,21 @@ export default function RecruitmentStages() {
 }
 
 function useRecruitmentStagesForm() {
+  const job = useAppSelector(selectJob);
   const { handleSubmit, control, watch, setValue } = useForm<FormInput>({
     defaultValues: {
-      numberOfStages: 0,
-      stages: [],
-      capacity: 0,
+      numberOfStages: job.numberOfStages,
+      stages: job.stages,
+      capacity: job.capacity,
     },
   });
-
   const numberOfStages = watch("numberOfStages");
   const selectedStages = watch("stages");
 
-  const onSubmit: SubmitHandler<FormInput> = (data) => console.log(data);
+  const dispatch = useAppDispatch();
+  const onSubmit: SubmitHandler<FormInput> = (data) => {
+    dispatch(setRecruitmentStages(data));
+  };
 
   const onDragEnd = ({ destination, source }: DropResult) => {
     if (!destination) return;
