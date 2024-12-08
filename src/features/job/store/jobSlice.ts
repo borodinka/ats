@@ -1,3 +1,4 @@
+import { PURGE } from "redux-persist";
 import { v4 as uuidv4 } from "uuid";
 
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
@@ -11,13 +12,13 @@ interface JobState {
   currentStep: number;
 }
 
-const initialState: JobState = {
+const getInitialState = () => ({
   job: {
     id: uuidv4(),
     title: "",
     employmentTypes: [],
     categories: [],
-    salary: [35000, 80000],
+    salary: [35000, 80000] as [number, number],
     requiredSkills: [],
     description: "",
     responsibilities: "",
@@ -29,7 +30,9 @@ const initialState: JobState = {
     capacity: 0,
   },
   currentStep: 0,
-};
+});
+
+const initialState: JobState = getInitialState();
 
 export const jobSlice = createSlice({
   name: "job",
@@ -79,8 +82,8 @@ export const jobSlice = createSlice({
       state.job.qualifications = action.payload.qualifications;
       state.job.niceToHaves = action.payload.niceToHaves;
     },
-    setBenefits: (state, action: PayloadAction<Pick<Job, "perksBenefits">>) => {
-      state.job.perksBenefits = action.payload.perksBenefits;
+    setBenefits: (state, action: PayloadAction<Job["perksBenefits"]>) => {
+      state.job.perksBenefits = action.payload;
     },
     setRecruitmentStages: (
       state,
@@ -92,6 +95,11 @@ export const jobSlice = createSlice({
       state.job.stages = action.payload.stages;
       state.job.capacity = action.payload.capacity;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(PURGE, () => {
+      return getInitialState();
+    });
   },
 });
 
