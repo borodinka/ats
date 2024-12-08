@@ -65,7 +65,7 @@ function useBenefitsForm() {
   const dispatch = useAppDispatch();
   const onSubmit: SubmitHandler<FormInput> = (data) => {
     dispatch(nextStep());
-    dispatch(setBenefits(data));
+    dispatch(setBenefits(data.perksBenefits));
   };
 
   return {

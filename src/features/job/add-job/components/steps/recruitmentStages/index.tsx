@@ -10,6 +10,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { Stack } from "@mui/material";
 
 import Divider from "@features/ui/Divider";
+import { addJob } from "@services/api/job";
 import { useAppDispatch, useAppSelector } from "@store/index";
 
 import { selectJob, setRecruitmentStages } from "../../../../store/jobSlice";
@@ -134,8 +135,14 @@ function useRecruitmentStagesForm() {
   const selectedStages = watch("stages");
 
   const dispatch = useAppDispatch();
-  const onSubmit: SubmitHandler<FormInput> = (data) => {
+  const onSubmit: SubmitHandler<FormInput> = async (data) => {
     dispatch(setRecruitmentStages(data));
+    await addJob({
+      ...job,
+      numberOfStages: data.numberOfStages,
+      stages: data.stages,
+      capacity: data.capacity,
+    });
   };
 
   const onDragEnd = ({ destination, source }: DropResult) => {
