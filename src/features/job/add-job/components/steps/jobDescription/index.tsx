@@ -5,12 +5,12 @@ import { Stack } from "@mui/material";
 import Divider from "@features/ui/Divider";
 import { useAppDispatch, useAppSelector } from "@store/index";
 
+import type { Job } from "../../../../types";
 import {
   nextStep,
   selectJob,
   setJobDescription,
-} from "../../../../store/jobSlice";
-import type { Job } from "../../../../types";
+} from "../../../store/jobWizardSlice";
 import Pagination from "../../navigation/Pagination";
 import TextInputSection from "./TextInputSection";
 import { FORM_FIELDS } from "./data";
@@ -34,12 +34,13 @@ export default function JobDescription() {
       gap={3}
     >
       {FORM_FIELDS.map(
-        ({ name, requireErrorText, title, subtitle, placeholder }) => (
+        ({ name, requireErrorText, title, subtitle, placeholder }, index) => (
           <Stack key={name} gap={3}>
             <TextInputSection
               id={name}
               control={control}
               name={name}
+              autoFocus={index === 0}
               requireErrorText={requireErrorText}
               title={title}
               subtitle={subtitle}

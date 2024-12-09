@@ -5,8 +5,12 @@ import { Stack } from "@mui/material";
 import Divider from "@features/ui/Divider";
 import { useAppDispatch, useAppSelector } from "@store/index";
 
-import { nextStep, selectJob, setBenefits } from "../../../../store/jobSlice";
 import { type Job, type PerkBenefit } from "../../../../types";
+import {
+  nextStep,
+  selectJob,
+  setBenefits,
+} from "../../../store/jobWizardSlice";
 import Pagination from "../../navigation/Pagination";
 import CustomSelect from "../ui/CustomSelect";
 import { isCustomSelectObject } from "../utils";

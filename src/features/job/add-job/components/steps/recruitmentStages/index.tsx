@@ -13,8 +13,8 @@ import Divider from "@features/ui/Divider";
 import { addJob } from "@services/api/job";
 import { useAppDispatch, useAppSelector } from "@store/index";
 
-import { selectJob, setRecruitmentStages } from "../../../../store/jobSlice";
 import { type Job, type RecruitmentStage } from "../../../../types";
+import { selectJob, setRecruitmentStages } from "../../../store/jobWizardSlice";
 import Pagination from "../../navigation/Pagination";
 import CustomSelect from "../ui/CustomSelect";
 import { isCustomSelectObject } from "../utils";

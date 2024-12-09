@@ -16,6 +16,7 @@ interface Props {
   title: string;
   subtitle: string;
   placeHolder: string;
+  autoFocus: boolean;
 }
 
 export default function TextInputSection({
@@ -26,6 +27,7 @@ export default function TextInputSection({
   title,
   subtitle,
   placeHolder,
+  autoFocus,
 }: Props) {
   const { md } = useBreakpoints();
 
@@ -49,6 +51,7 @@ export default function TextInputSection({
               variant="outlined"
               required
               fullWidth
+              autoFocus={autoFocus}
               placeholder={`Enter ${placeHolder}`}
               multiline
               rows={6}

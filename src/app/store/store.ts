@@ -13,19 +13,19 @@ import storage from "redux-persist/lib/storage";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 import authReducer from "@features/auth/store/authSlice";
-import jobReducer from "@features/job/store/jobSlice";
+import jobWizardReducer from "@features/job/add-job/store/jobWizardSlice";
 
 import { rtkQueryErrorLogger } from "./middleware/errorMiddleware";
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  job: jobReducer,
+  jobWizard: jobWizardReducer,
 });
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["job"],
+  whitelist: ["jobWizard"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
