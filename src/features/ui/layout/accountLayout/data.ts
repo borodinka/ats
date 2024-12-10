@@ -26,7 +26,7 @@ export const ACCOUNT_LINKS: AccountLinks[] = [
   },
   {
     Icon: AssignmentOutlinedIcon,
-    text: "Job Listing",
+    text: "Job Listings",
     path: AppRoutes.jobs,
   },
   {

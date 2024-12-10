@@ -4,8 +4,8 @@ import AppButton from "@features/ui/AppButton";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 import { useAppDispatch, useAppSelector } from "@store/index";
 
-import { previousStep, selectCurrentStep } from "../../../store/jobSlice";
 import { WIZARD_STEPS } from "../../data";
+import { previousStep, selectCurrentStep } from "../../store/jobWizardSlice";
 
 export default function Pagination() {
   const currentStep = useAppSelector(selectCurrentStep);

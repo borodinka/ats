@@ -25,8 +25,8 @@ import { useBreakpoints } from "@hooks/useBreakpoints";
 import { useAppDispatch, useAppSelector } from "@store/index";
 
 import { jobCategories, skills, typesOfEmployment } from "../../../../data";
-import { nextStep, selectJob, setJobInfo } from "../../../../store/jobSlice";
 import type { Job } from "../../../../types";
+import { nextStep, selectJob, setJobInfo } from "../../../store/jobWizardSlice";
 import Pagination from "../../navigation/Pagination";
 import CustomSelect from "../ui/CustomSelect";
 import GuideText from "../ui/GuideText";

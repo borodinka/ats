@@ -5,9 +5,9 @@ import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 import type { RootState } from "@store/index";
 
-import type { Job } from "../types";
+import type { Job } from "../../types";
 
-interface JobState {
+interface JobWizardState {
   job: Job;
   currentStep: number;
 }
@@ -32,10 +32,10 @@ const getInitialState = () => ({
   currentStep: 0,
 });
 
-const initialState: JobState = getInitialState();
+const initialState: JobWizardState = getInitialState();
 
-export const jobSlice = createSlice({
-  name: "job",
+export const jobWizardSlice = createSlice({
+  name: "jobWizard",
   initialState,
   reducers: {
     previousStep: (state) => {
@@ -110,9 +110,10 @@ export const {
   setJobDescription,
   setBenefits,
   setRecruitmentStages,
-} = jobSlice.actions;
+} = jobWizardSlice.actions;
 
-export const selectCurrentStep = (state: RootState) => state.job.currentStep;
-export const selectJob = (state: RootState) => state.job.job;
+export const selectCurrentStep = (state: RootState) =>
+  state.jobWizard.currentStep;
+export const selectJob = (state: RootState) => state.jobWizard.job;
 
-export default jobSlice.reducer;
+export default jobWizardSlice.reducer;

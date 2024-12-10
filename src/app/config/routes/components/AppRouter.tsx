@@ -8,6 +8,7 @@ import Dashboard from "@features/dashboard/dashboard";
 import Home from "@features/home/pages/home";
 import NotFound from "@features/home/pages/not-found";
 import AddJob from "@features/job/pages/add-job";
+import JobDetailsPage from "@features/job/pages/job-details";
 import Jobs from "@features/job/pages/jobs";
 import AuthLayout from "@features/ui/layout/AuthLayout";
 import AccountLayout from "@features/ui/layout/accountLayout/AccountLayout";
@@ -35,6 +36,7 @@ export default function AppRouter() {
         <Route path={AppRoutes.dashboard} element={<Dashboard />} />
         <Route path={AppRoutes.applicants} element={<Applicants />} />
         <Route path={AppRoutes.jobs} element={<Jobs />} />
+        <Route path={`${AppRoutes.jobs}/:jobId`} element={<JobDetailsPage />} />
         <Route path={AppRoutes.schedule} element={<Schedule />} />
         <Route path={AppRoutes.addJob} element={<AddJob />} />
       </Route>

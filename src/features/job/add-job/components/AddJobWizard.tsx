@@ -4,8 +4,8 @@ import { Colors } from "@config/styles";
 import Divider from "@features/ui/Divider";
 import { useAppSelector } from "@store/index";
 
-import { selectCurrentStep } from "../../store/jobSlice";
 import { WIZARD_STEPS } from "../data";
+import { selectCurrentStep } from "../store/jobWizardSlice";
 import StyledStepper from "./navigation/StyledStepper";
 
 export default function AddJobWizard() {
