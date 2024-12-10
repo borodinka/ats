@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 import {
   Box,
@@ -10,6 +10,7 @@ import {
   styled,
 } from "@mui/material";
 
+import ErrorBoundary from "@config/routes/components/ErrorBoundary";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
 import AccountSidebar from "./AccountSidebar";
@@ -64,6 +65,8 @@ export default function AccountLayout() {
   const handleDrawerToggle = () => {
     setOpen(!isOpen);
   };
+
+  useLocation();
 
   return (
     <Box
@@ -125,7 +128,9 @@ export default function AccountLayout() {
         }}
       >
         <Toolbar sx={{ mt: 1.5, mb: 1 }} />
-        <Outlet />
+        <ErrorBoundary>
+          <Outlet />
+        </ErrorBoundary>
       </Box>
     </Box>
   );

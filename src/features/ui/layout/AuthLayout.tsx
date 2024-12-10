@@ -1,7 +1,8 @@
 import { Outlet, useLocation } from "react-router-dom";
 
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Stack, Typography } from "@mui/material";
 
+import ErrorBoundary from "@config/routes/components/ErrorBoundary";
 import LoginBackground from "@features/auth/assets/login-background.jpg";
 import SignUpBackground from "@features/auth/assets/sign-up-background.jpg";
 import { useBreakpoints } from "@hooks/useBreakpoints";
@@ -84,11 +85,15 @@ export default function AuthLayout() {
               <Logo />
             </Box>
           )}
-          <Typography variant="h1" color="text.secondary" mb={3}>
-            {isLoginPage ? "Welcome back!" : "Get more opportunities!"}
-          </Typography>
-          <Divider />
-          <Outlet />
+          <Stack gap={3}>
+            <Typography variant="h1" color="text.secondary" textAlign="center">
+              {isLoginPage ? "Welcome back!" : "Get more opportunities!"}
+            </Typography>
+            <Divider />
+            <ErrorBoundary>
+              <Outlet />
+            </ErrorBoundary>
+          </Stack>
         </Box>
       </Grid>
     </Grid>
