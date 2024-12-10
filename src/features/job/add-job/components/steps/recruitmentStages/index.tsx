@@ -10,7 +10,7 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import { Stack } from "@mui/material";
 
 import Divider from "@features/ui/Divider";
-import { addJob } from "@services/api/job";
+import { addJob } from "@services/api";
 import { useAppDispatch, useAppSelector } from "@store/index";
 
 import { type Job, type RecruitmentStage } from "../../../../types";
