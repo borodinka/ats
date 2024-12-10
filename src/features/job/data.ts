@@ -17,13 +17,23 @@ export const jobCategories = [
 ] as const;
 
 export const skills = [
+  "Illustrator",
   "Project Management",
+  "Research",
   "Graphic Design",
   "Prototyping",
+  "Writing",
+  "Content Strategy",
   "Negotiation",
   "Social Media Marketing",
+  "Leadership",
   "Data Analysis",
   "Problem Solving",
   "JavaScript",
+  "Python",
+  "React",
+  "Adobe Photoshop",
+  "CSS",
+  "Machine Learning",
   "Cybersecurity",
 ] as const;
