@@ -1,4 +1,4 @@
-import JobDetails from "../edit/JobDetails";
+import JobDetails from "../details";
 
 export default function JobDetailsPage() {
   return <JobDetails />;

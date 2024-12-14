@@ -1,21 +1,16 @@
 import { Link } from "react-router-dom";
 
-import {
-  Box,
-  ButtonBase,
-  Chip,
-  LinearProgress,
-  Typography,
-  alpha,
-} from "@mui/material";
+import { Box, ButtonBase, Chip, Typography, alpha } from "@mui/material";
 
 import { AppRoutes } from "@config/routes";
-import { Colors, theme } from "@config/styles";
+import { Colors } from "@config/styles";
 import { FontWeights } from "@config/styles/FontWeights";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
 import type { Job } from "../../types";
-import { getCategoryColor, getEmploymentTypeColor } from "../utils/chipColor";
+import ApplicationProgressBar from "../../ui/ApplicationProgressBar";
+import CategoryChips from "../../ui/CategoryChips";
+import { getEmploymentTypeColor } from "../../utils";
 
 interface Props {
   job: Job;
@@ -24,7 +19,6 @@ interface Props {
 
 export default function JobCard({ job, currentApplicants }: Props) {
   const { md } = useBreakpoints();
-  const progress = (currentApplicants / job.capacity) * 100;
 
   return (
     <ButtonBase
@@ -82,55 +76,13 @@ export default function JobCard({ job, currentApplicants }: Props) {
           <Typography variant="h4" color="text.secondary">
             {job.title}
           </Typography>
-          <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap", mt: 3 }}>
-            {job.categories.map((category) => {
-              const categoryColor = getCategoryColor(category);
-              return (
-                <Chip
-                  key={category}
-                  label={
-                    <Typography
-                      variant="subtitle1"
-                      color={categoryColor}
-                      fontWeight={FontWeights.semibold}
-                    >
-                      {category}
-                    </Typography>
-                  }
-                  sx={{
-                    border: 1.5,
-                    borderColor: categoryColor,
-                    backgroundColor: "transparent",
-                  }}
-                />
-              );
-            })}
-          </Box>
+          <CategoryChips categories={job.categories} />
         </Box>
         <Box sx={{ marginTop: "auto" }}>
-          <LinearProgress
-            variant="determinate"
-            value={progress}
-            sx={{
-              mb: 1,
-              mt: 3,
-              height: 6,
-              backgroundColor: Colors.primaryGrey,
-              "& .MuiLinearProgress-bar": {
-                backgroundColor: Colors.aquamarine,
-              },
-            }}
+          <ApplicationProgressBar
+            capacity={job.capacity}
+            currentApplicants={currentApplicants}
           />
-          <Typography component="span" variant="subtitle2">
-            {`${currentApplicants} applied `}
-          </Typography>
-          <Typography
-            component="span"
-            variant="subtitle1"
-            color={theme.palette.grey[100]}
-          >
-            {`of ${job.capacity} capacity`}
-          </Typography>
         </Box>
       </Box>
     </ButtonBase>
