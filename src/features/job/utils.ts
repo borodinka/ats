@@ -1,6 +1,14 @@
 import { Colors, theme } from "@config/styles";
 
-export const getEmploymentTypeColor = (type: string): string => {
+import {
+  type CustomSelectType,
+  type EmploymentType,
+  type JobCategory,
+  type PerkBenefit,
+  type RecruitmentStage,
+} from "./types";
+
+export const getEmploymentTypeColor = (type: EmploymentType): string => {
   switch (type) {
     case "Full-Time":
       return Colors.aquamarine;
@@ -17,7 +25,7 @@ export const getEmploymentTypeColor = (type: string): string => {
   }
 };
 
-export const getCategoryColor = (category: string): string => {
+export const getCategoryColor = (category: JobCategory): string => {
   switch (category) {
     case "Design":
       return theme.palette.primary.main;
@@ -36,4 +44,10 @@ export const getCategoryColor = (category: string): string => {
     default:
       return theme.palette.text.primary;
   }
+};
+
+export const isCustomSelectObject = (
+  item: CustomSelectType,
+): item is PerkBenefit | RecruitmentStage => {
+  return typeof item !== "string";
 };

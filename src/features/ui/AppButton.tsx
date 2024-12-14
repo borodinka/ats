@@ -16,7 +16,7 @@ interface Props {
 export default function AppButton({
   type = "button",
   variant = "contained",
-  fullWidth,
+  fullWidth = false,
   children,
   LinkComponent,
   href,

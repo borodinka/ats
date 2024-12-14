@@ -1,4 +1,4 @@
-import type { Job } from "../../../../types";
+import type { Job } from "../../../types";
 
 export const RECRUITMENT_STAGES: Job["stages"] = [
   {

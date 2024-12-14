@@ -95,6 +95,11 @@ export const jobWizardSlice = createSlice({
       state.job.stages = action.payload.stages;
       state.job.capacity = action.payload.capacity;
     },
+    reset: (state) => {
+      const initialState = getInitialState();
+      state.currentStep = initialState.currentStep;
+      state.job = initialState.job;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, () => {
@@ -110,6 +115,7 @@ export const {
   setJobDescription,
   setBenefits,
   setRecruitmentStages,
+  reset,
 } = jobWizardSlice.actions;
 
 export const selectCurrentStep = (state: RootState) =>

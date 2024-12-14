@@ -7,7 +7,11 @@ import { useAppDispatch, useAppSelector } from "@store/index";
 import { WIZARD_STEPS } from "../../data";
 import { previousStep, selectCurrentStep } from "../../store/jobWizardSlice";
 
-export default function Pagination() {
+interface Props {
+  isLoading?: boolean;
+}
+
+export default function Pagination({ isLoading }: Props) {
   const currentStep = useAppSelector(selectCurrentStep);
   const { md } = useBreakpoints();
   const dispatch = useAppDispatch();
@@ -20,7 +24,12 @@ export default function Pagination() {
       position="static"
       activeStep={currentStep}
       nextButton={
-        <AppButton type="submit" fullWidth={!md} sx={{ px: md ? 5 : 0 }}>
+        <AppButton
+          type="submit"
+          fullWidth={!md}
+          loading={isLoading}
+          sx={{ px: md ? 5 : 0 }}
+        >
           Next
         </AppButton>
       }

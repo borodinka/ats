@@ -16,6 +16,7 @@ const theme = createTheme({
     },
     grey: {
       [100]: "#7C8493",
+      [200]: "#202430",
     },
   },
   components: {
@@ -50,6 +51,13 @@ const theme = createTheme({
     MuiButtonBase: {
       defaultProps: {
         LinkComponent: LinkBehavior,
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.palette.grey[100],
+        }),
       },
     },
   },

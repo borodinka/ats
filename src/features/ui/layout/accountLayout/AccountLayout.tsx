@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 
 import {
@@ -57,6 +57,7 @@ const StyledDrawer = styled(Drawer, {
 export default function AccountLayout() {
   const { md, lg } = useBreakpoints();
   const [isOpen, setOpen] = useState(lg);
+  const location = useLocation();
 
   const closeDrawer = () => {
     setOpen(false);
@@ -66,7 +67,9 @@ export default function AccountLayout() {
     setOpen(!isOpen);
   };
 
-  useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
     <Box

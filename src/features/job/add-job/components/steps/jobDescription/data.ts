@@ -7,21 +7,21 @@ export const FORM_FIELDS: FormField[] = [
     subtitle:
       "Provide a detailed overview of the role, including its purpose, scope, and key objectives",
     placeholder: "job description",
-    requireErrorText: "Please specify job description",
+    requireErrorText: "job description",
   },
   {
     name: "responsibilities",
     title: "Responsibilities",
     subtitle: "Outline the core responsibilities of the position",
     placeholder: "job responsibilities",
-    requireErrorText: "Please specify responsibilities",
+    requireErrorText: "responsibilities",
   },
   {
     name: "qualifications",
     title: "Who You Are",
     subtitle: "Add your preferred candidates qualifications",
     placeholder: "qualifications",
-    requireErrorText: "Please specify qualifications",
+    requireErrorText: "qualifications",
   },
   {
     name: "niceToHaves",
@@ -29,6 +29,6 @@ export const FORM_FIELDS: FormField[] = [
     subtitle:
       "Add nice-to-have skills and qualifications for the role to encourage a more diverse set of candidates to apply",
     placeholder: "nice-to-haves",
-    requireErrorText: "Please specify nice-to-haves",
+    requireErrorText: "nice-to-haves",
   },
 ];

@@ -160,7 +160,7 @@ export default function AccountSidebar({
               direction="row"
             >
               <AddIcon />
-              {isMinimized ? "" : "Post a Job"}
+              Post a Job
             </Stack>
           </AppButton>
         )}
