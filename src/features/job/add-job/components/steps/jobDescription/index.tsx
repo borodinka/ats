@@ -1,21 +1,23 @@
 import { type SubmitHandler, useForm } from "react-hook-form";
 
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 
 import Divider from "@features/ui/Divider";
+import { useBreakpoints } from "@hooks/useBreakpoints";
 import { useAppDispatch, useAppSelector } from "@store/index";
 
 import type { Job } from "../../../../types";
+import { TextInputForm } from "../../../../ui/forms";
 import {
   nextStep,
   selectJob,
   setJobDescription,
 } from "../../../store/jobWizardSlice";
 import Pagination from "../../navigation/Pagination";
-import TextInputSection from "./TextInputSection";
+import GuideText from "../ui/GuideText";
 import { FORM_FIELDS } from "./data";
 
-export interface FormInput {
+interface FormInput {
   description: Job["description"];
   responsibilities: Job["responsibilities"];
   qualifications: Job["qualifications"];
@@ -24,6 +26,7 @@ export interface FormInput {
 
 export default function JobDescription() {
   const { handleSubmit, control, onSubmit } = useJobDescriptionForm();
+  const { md } = useBreakpoints();
 
   return (
     <Stack
@@ -36,16 +39,22 @@ export default function JobDescription() {
       {FORM_FIELDS.map(
         ({ name, requireErrorText, title, subtitle, placeholder }, index) => (
           <Stack key={name} gap={3}>
-            <TextInputSection
-              id={name}
-              control={control}
-              name={name}
-              autoFocus={index === 0}
-              requireErrorText={requireErrorText}
-              title={title}
-              subtitle={subtitle}
-              placeHolder={placeholder}
-            />
+            <Box
+              display="flex"
+              gap={2}
+              justifyContent="space-between"
+              flexDirection={!md ? "column" : "row"}
+            >
+              <GuideText title={title} subtitle={subtitle} />
+              <TextInputForm
+                id={name}
+                control={control}
+                name={name}
+                autoFocus={index === 0}
+                requireErrorText={requireErrorText}
+                placeHolder={placeholder}
+              />
+            </Box>
             <Divider />
           </Stack>
         ),

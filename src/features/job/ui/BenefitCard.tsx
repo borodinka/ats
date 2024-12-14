@@ -4,8 +4,8 @@ import { Box, IconButton, Typography } from "@mui/material";
 import { Colors } from "@config/styles";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
-import type { PerkBenefit } from "../../../../types";
-import { PERKS_ICONS } from "./data";
+import { PERKS_ICONS } from "../data";
+import type { PerkBenefit } from "../types";
 
 interface Props {
   key: React.Key;
@@ -23,7 +23,7 @@ export default function BenefitCard({ val, onClose }: Props) {
         p: 2,
         maxWidth: md ? 274 : 1,
         width: 1,
-        border: 1.5,
+        border: onClose ? 1.5 : 0,
         borderColor: Colors.primaryGrey,
         borderRadius: 1,
       }}
@@ -35,16 +35,18 @@ export default function BenefitCard({ val, onClose }: Props) {
         mb={3}
       >
         {Icon && <Icon />}
-        <IconButton
-          onClick={onClose}
-          aria-label="remove benefit card"
-          sx={{
-            color: "text.secondary",
-            padding: 0,
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
+        {onClose && (
+          <IconButton
+            onClick={onClose}
+            aria-label="remove benefit card"
+            sx={{
+              color: "text.secondary",
+              padding: 0,
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        )}
       </Box>
       <Typography variant="h3" color="text.secondary" mb={1}>
         {val.title}

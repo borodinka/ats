@@ -6,6 +6,8 @@ export type JobCategory = (typeof jobCategories)[number];
 
 export type Skill = (typeof skills)[number];
 
+export type CustomSelectType = Skill | PerkBenefit | RecruitmentStage;
+
 export type PerkIconName =
   | "CameraIcon"
   | "CharityIcon"

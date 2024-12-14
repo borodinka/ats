@@ -16,14 +16,14 @@ import {
 import { Colors } from "@config/styles";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
-import type { RecruitmentStage } from "../../../../types";
+import type { RecruitmentStage } from "../../../types";
 
 interface Props {
   key: React.Key;
   stage: RecruitmentStage;
   onClose: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  control: Control<any, unknown>;
+  control: Control<any, unknown> | undefined;
   index: number;
   stageNumber: number;
 }
