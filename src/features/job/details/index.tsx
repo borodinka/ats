@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import {
   Breadcrumbs,
@@ -11,11 +11,7 @@ import {
 import { AppRoutes } from "@config/routes";
 import { Colors, theme } from "@config/styles";
 
-import {
-  useDeleteJobMutation,
-  useGetJobByIdQuery,
-  useUpdateJobMutation,
-} from "../store/jobsApi";
+import { useGetJobByIdQuery, useUpdateJobMutation } from "../store/jobsApi";
 import type { Job } from "../types";
 import Hero from "./components/Hero";
 import JobTabs from "./components/tabs/JobTabs";
@@ -29,17 +25,10 @@ export default function JobDetails() {
     isSuccess,
     isLoading,
   } = useGetJobByIdQuery(jobId);
-  const navigate = useNavigate();
   const [updateJob] = useUpdateJobMutation();
-  const [deleteJob] = useDeleteJobMutation();
 
   const onUpdate = (data: Partial<Job>) => {
     updateJob({ id: job!.id, data });
-  };
-
-  const onDelete = async () => {
-    navigate(AppRoutes.jobs);
-    await deleteJob(jobId!);
   };
 
   if (isLoading) {
@@ -63,7 +52,7 @@ export default function JobDetails() {
               {job.title}
             </Typography>
           </Breadcrumbs>
-          <Hero jobTitle={job.title} onDelete={onDelete} />
+          <Hero jobTitle={job.title} jobId={jobId} />
         </Stack>
         <JobTabs job={job} onUpdate={onUpdate} />
       </Stack>
