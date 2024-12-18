@@ -7,6 +7,7 @@ import { FontFamilies } from "@config/styles/FontFamilies";
 import { FontWeights } from "@config/styles/FontWeights";
 
 import type { Job } from "../../../types";
+import ApplicantsTab from "./ApplicantsTab";
 import DetailsTab from "./DetailsTab";
 
 interface Props {
@@ -91,7 +92,7 @@ export default function JobTabs({ job, onUpdate }: Props) {
         <DetailsTab job={job} onUpdate={onUpdate} />
       </CustomTabPanel>
       <CustomTabPanel value={selectedTab} index={1}>
-        Applicants
+        <ApplicantsTab />
       </CustomTabPanel>
     </Box>
   );

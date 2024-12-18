@@ -47,3 +47,13 @@ export interface Job {
   stages: RecruitmentStage[];
   capacity: number;
 }
+
+export interface ResumeFile {
+  fileName: string;
+  storagePath?: string;
+  url?: string;
+}
+
+export interface FileUpload extends ResumeFile {
+  file?: File;
+}
