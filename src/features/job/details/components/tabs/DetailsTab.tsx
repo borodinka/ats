@@ -68,36 +68,35 @@ export default function DetailsTab({ job, onUpdate }: Props) {
   };
 
   return (
-    <>
-      <Stack mb={2} alignItems="flex-end">
-        <AppButton
-          variant="outlined"
-          onClick={() => {
-            handleSubmit(() => {
-              toggleEditMode?.();
-            })();
-          }}
+    <Stack gap={2}>
+      <AppButton
+        variant="outlined"
+        onClick={() => {
+          handleSubmit(() => {
+            toggleEditMode?.();
+          })();
+        }}
+        sx={{ alignSelf: "flex-end" }}
+      >
+        <Stack
+          component="span"
+          gap={1}
+          alignItems="center"
+          justifyContent="center"
+          direction="row"
         >
-          <Stack
-            component="span"
-            gap={1}
-            alignItems="center"
-            justifyContent="center"
-            direction="row"
-          >
-            {isEditMode ? (
-              <>
-                <DoneOutlineOutlinedIcon /> {md && "Save"}
-              </>
-            ) : (
-              <>
-                <EditOutlinedIcon />
-                {md && "Edit"}
-              </>
-            )}
-          </Stack>
-        </AppButton>
-      </Stack>
+          {isEditMode ? (
+            <>
+              <DoneOutlineOutlinedIcon /> {md && "Save"}
+            </>
+          ) : (
+            <>
+              <EditOutlinedIcon />
+              {md && "Edit"}
+            </>
+          )}
+        </Stack>
+      </AppButton>
       <Stack gap={md ? 3 : 2}>
         <Grid container spacing={md ? 8 : 2}>
           <Grid item xs={12} md={8} mt={-5}>
@@ -321,7 +320,7 @@ export default function DetailsTab({ job, onUpdate }: Props) {
           )}
         </Stack>
       </Stack>
-    </>
+    </Stack>
   );
 }
 

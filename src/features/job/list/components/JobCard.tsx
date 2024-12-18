@@ -1,6 +1,4 @@
-import { Link } from "react-router-dom";
-
-import { Box, ButtonBase, Chip, Typography, alpha } from "@mui/material";
+import { Box, ButtonBase, Chip, Link, Typography, alpha } from "@mui/material";
 
 import { AppRoutes } from "@config/routes";
 import { Colors } from "@config/styles";
@@ -23,7 +21,7 @@ export default function JobCard({ job, currentApplicants }: Props) {
   return (
     <ButtonBase
       component={Link}
-      to={`${AppRoutes.jobs}/${job.id}`}
+      href={`${AppRoutes.jobs}/${job.id}`}
       sx={{
         display: "block",
         textAlign: "inherit",

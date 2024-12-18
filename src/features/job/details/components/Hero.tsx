@@ -1,19 +1,40 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { Box, Stack, Typography } from "@mui/material";
 
+import { AppRoutes } from "@config/routes";
 import { Colors } from "@config/styles";
 import AppButton from "@features/ui/AppButton";
+import AppDialog from "@features/ui/AppDialog";
 import { useBreakpoints } from "@hooks/useBreakpoints";
+import useToast from "@hooks/useToast";
 
+import { useDeleteJobMutation } from "../../store/jobsApi";
 import type { Job } from "../../types";
 
 interface Props {
   jobTitle: Job["title"];
-  onDelete: () => void;
+  jobId: Job["id"] | undefined;
 }
 
-export default function Hero({ jobTitle, onDelete }: Props) {
+export default function Hero({ jobTitle, jobId }: Props) {
+  const [isOpen, setOpen] = useState(false);
+  const open = () => setOpen(true);
+  const close = () => setOpen(false);
   const { md } = useBreakpoints();
+  const { showSuccessMessage } = useToast();
+  const navigate = useNavigate();
+  const [deleteJob] = useDeleteJobMutation();
+
+  const onDelete = async () => {
+    close();
+    navigate(AppRoutes.jobs);
+    await deleteJob(jobId!);
+    showSuccessMessage("Job offer was successfully deleted!");
+  };
+
   return (
     <Stack
       direction="row"
@@ -40,7 +61,7 @@ export default function Hero({ jobTitle, onDelete }: Props) {
           }}
         />
         <Stack direction="row" gap={1}>
-          <AppButton onClick={onDelete}>
+          <AppButton onClick={open}>
             <Stack
               component="span"
               gap={1}
@@ -54,6 +75,16 @@ export default function Hero({ jobTitle, onDelete }: Props) {
           </AppButton>
         </Stack>
       </Stack>
+      <AppDialog
+        title="Are you sure you want to delete this job offer?"
+        primaryButtonText="Yes"
+        secondaryButtonText="No"
+        isOpen={isOpen}
+        onClose={close}
+        onPrimaryButtonClick={onDelete}
+        onSecondaryButtonClick={close}
+        hideCloseButton
+      />
     </Stack>
   );
 }
