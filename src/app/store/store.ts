@@ -12,6 +12,7 @@ import storage from "redux-persist/lib/storage";
 
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
+import { applicantsApi } from "@features/applicant/store/applicantsApi";
 import authReducer from "@features/auth/store/authSlice";
 import jobWizardReducer from "@features/job/add-job/store/jobWizardSlice";
 import { jobsApi } from "@features/job/store/jobsApi";
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   jobWizard: jobWizardReducer,
   [jobsApi.reducerPath]: jobsApi.reducer,
+  [applicantsApi.reducerPath]: applicantsApi.reducer,
 });
 
 const persistConfig = {
@@ -41,6 +43,7 @@ export const store = configureStore({
       },
     })
       .concat(jobsApi.middleware)
+      .concat(applicantsApi.middleware)
       .concat(rtkQueryErrorLogger),
 });
 
