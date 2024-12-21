@@ -6,15 +6,19 @@ import { Stack } from "@mui/material";
 import AppButton from "@features/ui/AppButton";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
+import type { Job } from "../../../types";
 import ResumeUploadDialog from "../applicants/components/ResumeUploadDialog";
 
-export default function ApplicantsTab() {
+interface Props {
+  jobId: Job["id"];
+  recruitmentStages: Job["stages"];
+}
+
+export default function ApplicantsTab({ jobId, recruitmentStages }: Props) {
   const [isOpen, setOpen] = useState(false);
   const open = () => setOpen(true);
   const close = () => setOpen(false);
   const { md } = useBreakpoints();
-
-  const applicantId = "applicant1";
 
   return (
     <Stack gap={2}>
@@ -36,7 +40,8 @@ export default function ApplicantsTab() {
       <ResumeUploadDialog
         isOpen={isOpen}
         onClose={close}
-        applicantId={applicantId}
+        jobId={jobId}
+        recruitmentStages={recruitmentStages}
       />
     </Stack>
   );
