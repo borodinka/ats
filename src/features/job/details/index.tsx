@@ -52,7 +52,7 @@ export default function JobDetails() {
               {job.title}
             </Typography>
           </Breadcrumbs>
-          <Hero jobTitle={job.title} jobId={jobId} />
+          <Hero jobTitle={job.title} jobId={job.id} />
         </Stack>
         <JobTabs job={job} onUpdate={onUpdate} />
       </Stack>
