@@ -16,7 +16,7 @@ import type { Job } from "../../types";
 
 interface Props {
   jobTitle: Job["title"];
-  jobId: Job["id"] | undefined;
+  jobId: Job["id"];
 }
 
 export default function Hero({ jobTitle, jobId }: Props) {

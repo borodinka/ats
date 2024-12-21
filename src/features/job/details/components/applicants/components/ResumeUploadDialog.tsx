@@ -1,28 +1,33 @@
-import { ref, uploadBytesResumable } from "firebase/storage";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Controller,
   type FieldErrors,
   type SubmitHandler,
   useForm,
 } from "react-hook-form";
+import { v4 as uuidv4 } from "uuid";
 
 import { FormHelperText, Stack } from "@mui/material";
 
-import { selectUser } from "@features/auth/store/authSlice";
+import { useAddApplicantMutation } from "@features/applicant/store/applicantsApi";
+import { type Applicant, type FileUpload } from "@features/applicant/types";
 import AppDialog from "@features/ui/AppDialog";
 import useToast from "@hooks/useToast";
-import { storage } from "@services/firebase";
-import { useAppSelector } from "@store/index";
 
-import { type FileUpload, type ResumeFile } from "../../../../types";
+import { type Job } from "../../../../types";
+import {
+  extractTextFromPDF,
+  getStructuredDataFromPDF,
+  useResumeUpload,
+} from "../utils";
 import ResumeCard from "./ResumeCard";
 import UploadButton from "./UploadButton";
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  applicantId: string;
+  jobId: Job["id"];
+  recruitmentStages: Job["stages"];
 }
 
 interface FormInput {
@@ -32,7 +37,8 @@ interface FormInput {
 export default function ResumeUploadDialog({
   isOpen,
   onClose,
-  applicantId,
+  jobId,
+  recruitmentStages,
 }: Props) {
   const {
     inputRef,
@@ -40,12 +46,20 @@ export default function ResumeUploadDialog({
     control,
     onSubmit,
     onInputChange,
-    onRemove,
+    onReset,
     resume,
     uploadProgress,
-    uploadError,
     onValidate,
-  } = useResumeForm({ applicantId });
+    isLoading,
+    loadingMessage,
+  } = useResumeForm({ jobId, recruitmentStages, onClose });
+
+  useEffect(() => {
+    if (!isOpen) {
+      onReset();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   return (
     <AppDialog
@@ -54,6 +68,7 @@ export default function ResumeUploadDialog({
       onClose={onClose}
       primaryButtonText="Save"
       onPrimaryButtonClick={handleSubmit(onSubmit, onValidate)}
+      isLoading={isLoading}
     >
       <Stack component="form" alignItems="center">
         {resume ? (
@@ -61,12 +76,12 @@ export default function ResumeUploadDialog({
             <ResumeCard
               name={resume.fileName}
               url={resume.url}
-              onRemove={onRemove}
+              onRemove={onReset}
               uploadProgress={uploadProgress}
             />
-            {uploadError && (
-              <FormHelperText error sx={{ mt: 1 }}>
-                {uploadError}
+            {loadingMessage && (
+              <FormHelperText sx={{ mt: 1, textAlign: "center" }}>
+                {loadingMessage}
               </FormHelperText>
             )}
           </>
@@ -95,15 +110,21 @@ export default function ResumeUploadDialog({
   );
 }
 
-function useResumeForm({ applicantId }: Pick<Props, "applicantId">) {
+function useResumeForm({
+  jobId,
+  recruitmentStages,
+  onClose,
+}: Pick<Props, "jobId" | "recruitmentStages" | "onClose">) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { handleSubmit, control, watch, setValue } = useForm<FormInput>({
     defaultValues: {
       resume: null,
     },
   });
-  const { uploadResume, uploadProgress, uploadError } = useResumeUpload();
-  const { showErrorMessage } = useToast();
+  const { uploadResume, uploadProgress } = useResumeUpload();
+  const { showSuccessMessage, showErrorMessage } = useToast();
+  const [addApplicant, { isLoading }] = useAddApplicantMutation();
+  const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
 
   const onInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -122,7 +143,7 @@ function useResumeForm({ applicantId }: Pick<Props, "applicantId">) {
     });
   };
 
-  const onRemove = () => {
+  const onReset = () => {
     setValue("resume", null);
 
     if (inputRef.current) {
@@ -132,8 +153,70 @@ function useResumeForm({ applicantId }: Pick<Props, "applicantId">) {
 
   const resume = watch("resume");
 
-  const onSubmit: SubmitHandler<FormInput> = (data) => {
-    uploadResume(data.resume!, applicantId);
+  const onSubmit: SubmitHandler<FormInput> = async (data) => {
+    if (!data.resume || isLoading) {
+      return;
+    }
+
+    setLoadingMessage("Extracting text from resume...");
+    try {
+      const text = await extractTextFromPDF(data.resume.file!);
+      if (!text) {
+        showErrorMessage("Failed to extract text from the resume");
+        onClose();
+        return;
+      }
+
+      setLoadingMessage("Processing structured data...");
+      const structuredData = await getStructuredDataFromPDF(text);
+      if (
+        !structuredData ||
+        !structuredData.fullName ||
+        !structuredData.email
+      ) {
+        showErrorMessage("The uploaded file is not a valid resume");
+        onClose();
+        return;
+      }
+
+      setLoadingMessage("Uploading file...");
+      const uploadedFile = await uploadResume(data.resume);
+      if (!uploadedFile) {
+        onClose();
+        return;
+      }
+
+      setLoadingMessage("Adding applicant to the database...");
+      const applicant: Applicant = {
+        id: uuidv4(),
+        fullName: structuredData.fullName,
+        email: structuredData.email,
+        phone: structuredData.phone,
+        address: structuredData.address,
+        education: structuredData.education,
+        yearsOfExperience: structuredData.yearsOfExperience,
+        resume: uploadedFile,
+        jobId: jobId,
+        recruitmentStages: recruitmentStages,
+        currentStage: recruitmentStages[0],
+      };
+
+      const result = await addApplicant(applicant);
+
+      if ("error" in result) {
+        showErrorMessage("Failed to add a new applicant");
+        onClose();
+        return;
+      }
+
+      showSuccessMessage("Applicant added successfully!");
+      onClose();
+    } catch (error) {
+      const typedError = error as { message: string };
+      showErrorMessage(typedError.message || "An unexpected error occurred");
+    } finally {
+      setLoadingMessage(null);
+    }
   };
 
   const onValidate = (errors: FieldErrors<FormInput>) => {
@@ -147,66 +230,12 @@ function useResumeForm({ applicantId }: Pick<Props, "applicantId">) {
     handleSubmit,
     control,
     onInputChange,
-    onRemove,
+    onReset,
     resume,
     onSubmit,
     uploadProgress,
-    uploadError,
     onValidate,
+    isLoading,
+    loadingMessage,
   };
-}
-
-function useResumeUpload() {
-  const [state, setState] = useState<{
-    uploadProgress: number | undefined;
-    uploadError: string;
-    uploadedFile: ResumeFile | null;
-  }>({ uploadProgress: 0, uploadError: "", uploadedFile: null });
-  const user = useAppSelector(selectUser);
-
-  const uploadResume = (file: FileUpload, applicantId: string) => {
-    if (!file?.file) {
-      return;
-    }
-
-    const storageRef = ref(
-      storage,
-      `applicants-data/${user?.uid}/${applicantId}/${file.fileName}`,
-    );
-
-    const uploadTask = uploadBytesResumable(storageRef, file.file);
-
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setState((prevState) => {
-          return { ...prevState, uploadProgress: progress };
-        });
-      },
-      (error) => {
-        setState((prevState) => {
-          return {
-            ...prevState,
-            uploadProgress: undefined,
-            uploadError: `Oops! Something went wrong: ${error.message}`,
-          };
-        });
-      },
-      () => {
-        setState((prevState) => ({
-          ...prevState,
-          uploadProgress: undefined,
-          uploadError: "",
-          uploadedFile: {
-            fileName: file.fileName,
-            storagePath: uploadTask.snapshot.ref.fullPath,
-          },
-        }));
-      },
-    );
-  };
-
-  return { ...state, uploadResume };
 }

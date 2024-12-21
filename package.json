@@ -19,6 +19,8 @@
     "firebase": "^11.0.2",
     "lodash.debounce": "^4.0.8",
     "notistack": "^3.0.1",
+    "openai": "^4.77.0",
+    "pdfjs-dist": "^4.9.155",
     "react": "^18.3.1",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.3.1",
@@ -27,7 +29,8 @@
     "react-router-dom": "^6.26.2",
     "redux-persist": "^6.0.0",
     "uuid": "^11.0.3",
-    "vite-plugin-svgr": "^4.2.0"
+    "vite-plugin-svgr": "^4.2.0",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
