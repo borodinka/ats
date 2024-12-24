@@ -8,6 +8,7 @@ import { Box, Chip, Grid, Stack, Typography } from "@mui/material";
 
 import { Colors } from "@config/styles";
 import { FontWeights } from "@config/styles/FontWeights";
+import { useGetApplicantsByJobIdQuery } from "@features/applicant/store/applicantsApi";
 import AppButton from "@features/ui/AppButton";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
@@ -66,6 +67,10 @@ export default function DetailsTab({ job, onUpdate }: Props) {
   const formatSalary = (salary: number) => {
     return `$${Math.round(salary / 1000)}k`;
   };
+
+  const { data: applicants } = useGetApplicantsByJobIdQuery(job.id);
+
+  const currentApplicants = applicants?.length ?? 0;
 
   return (
     <Stack gap={2}>
@@ -166,7 +171,7 @@ export default function DetailsTab({ job, onUpdate }: Props) {
                 )}
                 <ApplicationProgressBar
                   capacity={job.capacity}
-                  currentApplicants={4}
+                  currentApplicants={currentApplicants}
                   background
                 />
                 <Stack flexDirection="row" justifyContent="space-between">

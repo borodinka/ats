@@ -3,6 +3,7 @@ import { Box, ButtonBase, Chip, Link, Typography, alpha } from "@mui/material";
 import { AppRoutes } from "@config/routes";
 import { Colors } from "@config/styles";
 import { FontWeights } from "@config/styles/FontWeights";
+import { useGetApplicantsByJobIdQuery } from "@features/applicant/store/applicantsApi";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
 import type { Job } from "../../types";
@@ -12,11 +13,13 @@ import { getEmploymentTypeColor } from "../../utils";
 
 interface Props {
   job: Job;
-  currentApplicants: number;
 }
 
-export default function JobCard({ job, currentApplicants }: Props) {
+export default function JobCard({ job }: Props) {
   const { md } = useBreakpoints();
+  const { data: applicants } = useGetApplicantsByJobIdQuery(job.id);
+
+  const currentApplicants = applicants?.length ?? 0;
 
   return (
     <ButtonBase
