@@ -5,4 +5,6 @@ export {
   getApplicants,
   getApplicantsByJobId,
   getApplicantById,
+  updateApplicant,
+  deleteApplicant,
 } from "./applicant";

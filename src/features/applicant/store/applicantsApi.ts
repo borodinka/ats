@@ -2,9 +2,11 @@ import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 
 import {
   addApplicant,
+  deleteApplicant,
   getApplicantById,
   getApplicants,
   getApplicantsByJobId,
+  updateApplicant,
 } from "@services/api";
 
 import type { Applicant } from "../types";
@@ -54,6 +56,26 @@ export const applicantsApi = createApi({
       },
       invalidatesTags: () => [{ type: "Applicants", id: "LIST" }],
     }),
+    updateApplicant: builder.mutation<
+      boolean,
+      { id: string; data: Partial<Applicant> }
+    >({
+      queryFn: async (data) => {
+        await updateApplicant(data.id, data.data);
+        return { data: true };
+      },
+      invalidatesTags: (_, __, { id }) => [{ type: "Applicants", id }],
+    }),
+    deleteApplicant: builder.mutation<boolean, string>({
+      queryFn: async (applicantId) => {
+        await deleteApplicant(applicantId);
+        return { data: true };
+      },
+      invalidatesTags: (_, __, id) => [
+        { type: "Applicants", id },
+        { type: "Applicants", id: "LIST" },
+      ],
+    }),
   }),
 });
 
@@ -62,4 +84,6 @@ export const {
   useGetApplicantsByJobIdQuery,
   useGetApplicantByIdQuery,
   useAddApplicantMutation,
+  useDeleteApplicantMutation,
+  useUpdateApplicantMutation,
 } = applicantsApi;
