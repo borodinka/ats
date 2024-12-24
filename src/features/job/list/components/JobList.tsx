@@ -1,5 +1,7 @@
 import { CircularProgress, Grid, Stack, Typography } from "@mui/material";
 
+import { Colors } from "@config/styles";
+
 import { useGetJobsQuery } from "../../store/jobsApi";
 import JobCard from "./JobCard";
 import NoJobs from "./NoJobs";
@@ -22,7 +24,18 @@ export default function JobList() {
   } else if (isSuccess && jobs.length > 0) {
     return (
       <Stack gap={4}>
-        <Stack gap={1}>
+        <Stack
+          sx={{
+            gap: 1,
+            width: 1,
+            position: "fixed",
+            bgcolor: Colors.white,
+            zIndex: 1,
+            pt: 3.1,
+            mt: -3.1,
+            pb: { xs: 1, md: 2 },
+          }}
+        >
           <Typography variant="h1" color="text.secondary">
             All Job Offers
           </Typography>
@@ -30,19 +43,10 @@ export default function JobList() {
             Showing {jobs.length} {jobs.length === 1 ? "result" : "results"}
           </Typography>
         </Stack>
-        <Grid
-          container
-          spacing={2}
-          sx={{
-            overflowY: "scroll",
-            maxHeight: { xs: "65vh", md: "78vh" },
-            minHeight: { xs: "65vh", md: "auto" },
-            pb: 1,
-          }}
-        >
+        <Grid container spacing={2} sx={{ pb: 5, pt: { xs: 10, md: 12 } }}>
           {jobs?.map((job) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={job.id}>
-              <JobCard job={job} currentApplicants={4} />
+              <JobCard job={job} />
             </Grid>
           ))}
         </Grid>
