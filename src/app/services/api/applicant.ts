@@ -1,10 +1,12 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 
@@ -75,5 +77,26 @@ export async function getApplicantById(applicantId?: string) {
     }
 
     return applicantSnap.data() as Applicant;
+  });
+}
+
+export async function updateApplicant(
+  applicantId: string,
+  data: Partial<Applicant>,
+) {
+  return authenticate(async () => {
+    const applicantRef = doc(firestore, "applicants", applicantId);
+    await updateDoc(applicantRef, data);
+
+    return true;
+  });
+}
+
+export async function deleteApplicant(applicantId: string) {
+  return authenticate(async () => {
+    const applicantRef = doc(firestore, "applicants", applicantId);
+    await deleteDoc(applicantRef);
+
+    return true;
   });
 }

@@ -10,6 +10,7 @@ interface Props {
   href?: string;
   onClick?: () => void;
   loading?: boolean;
+  disabled?: boolean;
   sx?: SxProps<Theme>;
 }
 
@@ -22,6 +23,7 @@ export default function AppButton({
   href,
   onClick,
   loading,
+  disabled = false,
   sx,
 }: Props) {
   return (
@@ -33,6 +35,7 @@ export default function AppButton({
       fullWidth={fullWidth}
       onClick={onClick}
       loading={loading}
+      disabled={disabled}
       sx={{ height: 50, textTransform: "none", ...sx }}
     >
       <Typography component="span" variant="body2">

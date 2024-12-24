@@ -1,10 +1,14 @@
-import { listAll, ref, uploadBytesResumable } from "firebase/storage";
+import { ref, uploadBytesResumable } from "firebase/storage";
 import OpenAI from "openai";
 import { zodResponseFormat } from "openai/helpers/zod";
 import { useState } from "react";
 import { z } from "zod";
 
-import { type FileUpload, type ResumeFile } from "@features/applicant/types";
+import {
+  type Applicant,
+  type FileUpload,
+  type ResumeFile,
+} from "@features/applicant/types";
 import { selectUser } from "@features/auth/store/authSlice";
 import useToast from "@hooks/useToast";
 import { storage } from "@services/firebase";
@@ -21,23 +25,22 @@ export function useResumeUpload() {
   const user = useAppSelector(selectUser);
   const { showErrorMessage } = useToast();
 
-  const uploadResume = async (file: FileUpload): Promise<ResumeFile | null> => {
+  const uploadResume = async (
+    file: FileUpload,
+    jobRole: Applicant["jobRole"],
+  ): Promise<ResumeFile | null> => {
     if (!file?.file) {
       return null;
     }
 
+    const formattedJobRole = jobRole
+      ? `${jobRole.replace(/\s+/g, "_").toLowerCase()}/`
+      : "";
     const path = `applicants-data/${user?.uid}/`;
-    const listRef = ref(storage, path);
-    const existingFiles = (await listAll(listRef)).items;
-
-    if (existingFiles.some((item) => item.name === file.fileName)) {
-      showErrorMessage(
-        "A candidate with this resume already exists. Please upload a different CV",
-      );
-      return null;
-    }
-
-    const storageRef = ref(storage, `${path}${file.fileName}`);
+    const storageRef = ref(
+      storage,
+      `${path}${formattedJobRole}/${file.fileName}`,
+    );
     const uploadTask = uploadBytesResumable(storageRef, file.file);
 
     return new Promise((resolve) => {
@@ -102,6 +105,7 @@ const ResumeExtractionSchema = z.object({
   education: z.string(),
   phone: z.string(),
   yearsOfExperience: z.number(),
+  jobRole: z.string(),
 });
 
 export const getStructuredDataFromPDF = async (
@@ -113,7 +117,7 @@ export const getStructuredDataFromPDF = async (
       {
         role: "system",
         content:
-          "You are an expert at structured data extraction. You will receive unstructured text from a resume and format it according to the specified structure. Fields: fullName, email, phone, address, education, and yearsOfExperience. Return null or an empty string for missing fields.",
+          "You are an expert at structured data extraction. You will receive unstructured text from a resume and format it according to the specified structure. Fields: fullName, email, phone, address, education, yearsOfExperience, and jobRole. Return null or an empty string for missing fields.",
       },
       { role: "user", content: text },
     ],

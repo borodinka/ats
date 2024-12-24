@@ -9,12 +9,17 @@ import { v4 as uuidv4 } from "uuid";
 
 import { FormHelperText, Stack } from "@mui/material";
 
-import { useAddApplicantMutation } from "@features/applicant/store/applicantsApi";
+import {
+  useAddApplicantMutation,
+  useGetApplicantsByJobIdQuery,
+  useGetApplicantsQuery,
+  useUpdateApplicantMutation,
+} from "@features/applicant/store/applicantsApi";
 import { type Applicant, type FileUpload } from "@features/applicant/types";
 import AppDialog from "@features/ui/AppDialog";
 import useToast from "@hooks/useToast";
 
-import { type Job } from "../../../../types";
+import type { Job } from "../../../../types";
 import {
   extractTextFromPDF,
   getStructuredDataFromPDF,
@@ -27,6 +32,7 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   jobId: Job["id"];
+  jobTitle: Job["title"];
   recruitmentStages: Job["stages"];
 }
 
@@ -38,6 +44,7 @@ export default function ResumeUploadDialog({
   isOpen,
   onClose,
   jobId,
+  jobTitle,
   recruitmentStages,
 }: Props) {
   const {
@@ -52,7 +59,7 @@ export default function ResumeUploadDialog({
     onValidate,
     isLoading,
     loadingMessage,
-  } = useResumeForm({ jobId, recruitmentStages, onClose });
+  } = useResumeForm({ jobId, jobTitle, recruitmentStages, onClose });
 
   useEffect(() => {
     if (!isOpen) {
@@ -112,9 +119,10 @@ export default function ResumeUploadDialog({
 
 function useResumeForm({
   jobId,
+  jobTitle,
   recruitmentStages,
   onClose,
-}: Pick<Props, "jobId" | "recruitmentStages" | "onClose">) {
+}: Pick<Props, "jobId" | "jobTitle" | "recruitmentStages" | "onClose">) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { handleSubmit, control, watch, setValue } = useForm<FormInput>({
     defaultValues: {
@@ -125,6 +133,9 @@ function useResumeForm({
   const { showSuccessMessage, showErrorMessage } = useToast();
   const [addApplicant, { isLoading }] = useAddApplicantMutation();
   const [loadingMessage, setLoadingMessage] = useState<string | null>(null);
+  const { data: applicants } = useGetApplicantsByJobIdQuery(jobId);
+  const { data: allApplicants } = useGetApplicantsQuery();
+  const [updateApplicant] = useUpdateApplicantMutation();
 
   const onInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -152,6 +163,10 @@ function useResumeForm({
   };
 
   const resume = watch("resume");
+  const stages: Applicant["stages"] = recruitmentStages.map((stage) => ({
+    ...stage,
+    feedback: "",
+  }));
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
     if (!data.resume || isLoading) {
@@ -172,15 +187,73 @@ function useResumeForm({
       if (
         !structuredData ||
         !structuredData.fullName ||
-        !structuredData.email
+        !structuredData.email ||
+        !structuredData.jobRole
       ) {
         showErrorMessage("The uploaded file is not a valid resume");
         onClose();
         return;
       }
 
+      if (structuredData.jobRole.toLowerCase() !== jobTitle.toLowerCase()) {
+        showErrorMessage(
+          "The job role in the resume does not match the job offer",
+        );
+        onClose();
+        return;
+      }
+
+      const alreadyApplied = applicants?.some(
+        (applicant) => applicant.email === structuredData.email,
+      );
+
+      if (alreadyApplied) {
+        showErrorMessage(
+          "This applicant already exists. Please upload a different resume",
+        );
+        onClose();
+        return;
+      }
+
+      const existingApplicant = allApplicants?.find(
+        (applicant) =>
+          applicant.email === structuredData.email &&
+          applicant.jobRole === jobTitle.toLowerCase(),
+      );
+
+      if (existingApplicant) {
+        const updatedFields: Partial<Applicant> = {
+          jobId: jobId,
+          score: 0,
+          status: "Interview",
+          declineReason: null,
+          stages: stages,
+          currentStage: stages[0],
+        };
+
+        setLoadingMessage("Adding applicant to the database...");
+
+        const updateResult = await updateApplicant({
+          id: existingApplicant.id,
+          data: updatedFields,
+        });
+
+        if (!updateResult) {
+          showErrorMessage("Failed to add the applicant");
+          onClose();
+          return;
+        }
+
+        showSuccessMessage("Applicant added successfully!");
+        onClose();
+        return;
+      }
+
       setLoadingMessage("Uploading file...");
-      const uploadedFile = await uploadResume(data.resume);
+      const uploadedFile = await uploadResume(
+        data.resume,
+        structuredData.jobRole,
+      );
       if (!uploadedFile) {
         onClose();
         return;
@@ -196,9 +269,13 @@ function useResumeForm({
         education: structuredData.education,
         yearsOfExperience: structuredData.yearsOfExperience,
         resume: uploadedFile,
+        jobRole: structuredData.jobRole.toLowerCase(),
         jobId: jobId,
-        recruitmentStages: recruitmentStages,
-        currentStage: recruitmentStages[0],
+        stages: stages,
+        currentStage: stages[0],
+        score: 0,
+        status: "Interview",
+        declineReason: null,
       };
 
       const result = await addApplicant(applicant);

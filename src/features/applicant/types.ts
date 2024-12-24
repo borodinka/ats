@@ -10,16 +10,26 @@ export interface FileUpload extends ResumeFile {
   file?: File;
 }
 
+export interface StageWithFeedback extends RecruitmentStage {
+  feedback: string;
+}
+
+export type Status = "Interview" | "Hired" | "Declined";
+
 export interface Applicant {
   id: string;
   fullName: string;
   email: string;
   phone: string;
-  address: string;
-  education?: string;
+  address?: string | null;
+  education: string;
   yearsOfExperience?: number;
+  jobRole: string;
   resume: ResumeFile;
-  jobId: string;
-  recruitmentStages: Job["stages"];
-  currentStage: RecruitmentStage;
+  jobId?: Job["id"] | null;
+  stages: StageWithFeedback[];
+  currentStage: StageWithFeedback | null;
+  score: number;
+  status: Status;
+  declineReason: string | null;
 }
