@@ -92,7 +92,12 @@ export default function JobTabs({ job, onUpdate }: Props) {
         <DetailsTab job={job} onUpdate={onUpdate} />
       </CustomTabPanel>
       <CustomTabPanel value={selectedTab} index={1}>
-        <ApplicantsTab jobId={job.id} recruitmentStages={job.stages} />
+        <ApplicantsTab
+          jobId={job.id}
+          jobTitle={job.title}
+          recruitmentStages={job.stages}
+          capacity={job.capacity}
+        />
       </CustomTabPanel>
     </Box>
   );

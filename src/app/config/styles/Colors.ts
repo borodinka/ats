@@ -11,4 +11,5 @@ export const Colors = {
   pink: "#FF69B4",
   amethyst: "#B664CD",
   red: "#FF0000",
+  yellow: "#FAAF00;",
 };

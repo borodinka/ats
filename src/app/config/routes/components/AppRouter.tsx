@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 
+import ApplicantDetails from "@features/applicant/pages/applicantDetails";
 import Applicants from "@features/applicant/pages/applicants";
 import Login from "@features/auth/pages/login";
 import SignUp from "@features/auth/pages/sign-up";
@@ -35,8 +36,16 @@ export default function AppRouter() {
       >
         <Route path={AppRoutes.dashboard} element={<Dashboard />} />
         <Route path={AppRoutes.applicants} element={<Applicants />} />
+        <Route
+          path={`${AppRoutes.applicants}/:applicantId`}
+          element={<ApplicantDetails />}
+        />
         <Route path={AppRoutes.jobs} element={<Jobs />} />
         <Route path={`${AppRoutes.jobs}/:jobId`} element={<JobDetailsPage />} />
+        <Route
+          path={`${AppRoutes.jobs}/:jobId/applicants/:applicantId`}
+          element={<ApplicantDetails />}
+        />
         <Route path={AppRoutes.schedule} element={<Schedule />} />
         <Route path={AppRoutes.addJob} element={<AddJob />} />
       </Route>

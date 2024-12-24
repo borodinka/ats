@@ -1,3 +1,5 @@
+import AllApplicants from "../components/AllApplicants";
+
 export default function Applicants() {
-  return <div>Applicants</div>;
+  return <AllApplicants />;
 }
