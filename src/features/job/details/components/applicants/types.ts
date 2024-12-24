@@ -1,8 +1,11 @@
+import type { Applicant } from "@features/applicant/types";
+
 export interface ResumeExtraction {
-  fullName: string;
-  email: string;
-  phone: string;
-  address: string;
-  education?: string;
-  yearsOfExperience?: number;
+  fullName: Applicant["fullName"];
+  email: Applicant["email"];
+  phone: Applicant["phone"];
+  address: Applicant["address"];
+  education: Applicant["education"];
+  yearsOfExperience: Applicant["yearsOfExperience"];
+  jobRole: Applicant["jobRole"];
 }
