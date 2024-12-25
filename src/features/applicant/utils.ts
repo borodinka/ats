@@ -1,6 +1,28 @@
 import { Colors, theme } from "@config/styles";
+import { getDownloadURL } from "@services/firebase";
 
 import type { Status } from "./types";
+
+export const handleOpenResume = async (
+  showErrorMessage: (message: string) => void,
+  storagePath?: string | null,
+) => {
+  if (!storagePath) {
+    showErrorMessage("No file available to open");
+    return;
+  }
+
+  try {
+    const url = await getDownloadURL(storagePath);
+    if (url) {
+      window.open(url, "_blank");
+    } else {
+      showErrorMessage("Failed to retrieve the file URL");
+    }
+  } catch (error) {
+    showErrorMessage(`Failed to open the file: ${error}`);
+  }
+};
 
 export function capitalizeWords(input: string): string {
   return input

@@ -1,6 +1,4 @@
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
-import StarIcon from "@mui/icons-material/Star";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
 import {
   ButtonBase,
   Link,
@@ -21,11 +19,16 @@ import type { Job } from "@features/job/types";
 import AppButton from "@features/ui/AppButton";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 import useToast from "@hooks/useToast";
-import { getDownloadURL } from "@services/firebase";
 
 import type { Applicant } from "../types";
-import { capitalizeWords, getStageColor, getStatusColor } from "../utils";
+import {
+  capitalizeWords,
+  getStageColor,
+  getStatusColor,
+  handleOpenResume,
+} from "../utils";
 import DotsMenu from "./DotsMenu";
+import Score from "./Score";
 import StyledChip from "./StyledChip";
 
 interface Props {
@@ -41,24 +44,6 @@ export default function ApplicantsTable({
 }: Props) {
   const { md } = useBreakpoints();
   const { showErrorMessage } = useToast();
-
-  const handleOpenResume = async (storagePath?: string | null) => {
-    if (!storagePath) {
-      showErrorMessage("No file available to open");
-      return;
-    }
-
-    try {
-      const url = await getDownloadURL(storagePath);
-      if (url) {
-        window.open(url, "_blank");
-      } else {
-        showErrorMessage("Failed to retrieve the file URL");
-      }
-    } catch (error) {
-      showErrorMessage(`Failed to open the file: ${error}`);
-    }
-  };
 
   const sortedApplicants = isJobView
     ? [...applicants].sort((a, b) => (b.score || 0) - (a.score || 0))
@@ -145,26 +130,7 @@ export default function ApplicantsTable({
                       href={`${path}${applicant.id}`}
                       sx={{ display: "block", p: 3, pl: 2 }}
                     >
-                      <Stack flexDirection="row" gap={1} alignItems="center">
-                        {applicant.score === 0 ? (
-                          <StarBorderIcon
-                            sx={{ fontSize: { xs: 24, md: 28 } }}
-                          />
-                        ) : (
-                          <StarIcon
-                            sx={{
-                              color: Colors.yellow,
-                              fontSize: { xs: 24, md: 28 },
-                            }}
-                          />
-                        )}
-                        <Typography
-                          color="text.secondary"
-                          fontWeight={FontWeights.medium}
-                        >
-                          {applicant.score?.toFixed(1)}
-                        </Typography>
-                      </Stack>
+                      <Score score={applicant.score} />
                     </ButtonBase>
                   </TableCell>
                 )}
@@ -226,7 +192,10 @@ export default function ApplicantsTable({
                   <AppButton
                     variant="outlined"
                     onClick={() =>
-                      handleOpenResume(applicant.resume.storagePath)
+                      handleOpenResume(
+                        showErrorMessage,
+                        applicant.resume.storagePath,
+                      )
                     }
                     sx={{
                       bgcolor: Colors.lavender,
