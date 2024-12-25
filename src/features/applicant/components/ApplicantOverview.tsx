@@ -93,7 +93,11 @@ export default function ApplicantOverview({ applicant, jobId }: Props) {
           </Stack>
         )}
       </Stack>
-      <Grid container spacing={md ? 3 : 0} sx={{ height: { md: 1 }, pb: 3 }}>
+      <Grid
+        container
+        spacing={md ? 3 : 0}
+        sx={{ height: { md: 1 }, pb: { xs: 3 } }}
+      >
         <Grid item xs={12} md={3} sx={{ height: { md: 1 } }}>
           <Stack
             sx={{
