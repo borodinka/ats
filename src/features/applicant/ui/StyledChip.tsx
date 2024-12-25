@@ -1,13 +1,14 @@
-import { Chip, Typography } from "@mui/material";
+import { Chip, type SxProps, type Theme, Typography } from "@mui/material";
 
 import { FontWeights } from "@config/styles/FontWeights";
 
 interface Props {
   text: string | undefined;
   color: string;
+  sx?: SxProps<Theme>;
 }
 
-export default function StyledChip({ text, color }: Props) {
+export default function StyledChip({ text, color, sx }: Props) {
   return (
     <Chip
       label={
@@ -23,6 +24,7 @@ export default function StyledChip({ text, color }: Props) {
         border: 1.5,
         borderColor: color,
         backgroundColor: "transparent",
+        ...sx,
       }}
     />
   );

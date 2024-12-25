@@ -1,11 +1,12 @@
 import { useParams } from "react-router-dom";
 
-import { CircularProgress, Stack, Typography } from "@mui/material";
+import { CircularProgress, Stack } from "@mui/material";
 
 import { useGetApplicantByIdQuery } from "../store/applicantsApi";
+import ApplicantOverview from "./ApplicantOverview";
 
 export default function ApplicantProfile() {
-  const { applicantId } = useParams();
+  const { jobId, applicantId } = useParams();
   const {
     data: applicant,
     error,
@@ -21,12 +22,7 @@ export default function ApplicantProfile() {
       </Stack>
     );
   } else if (isSuccess) {
-    return (
-      <>
-        <Typography>{applicant.fullName}</Typography>
-        <Typography>{applicant.email}</Typography>
-      </>
-    );
+    return <ApplicantOverview applicant={applicant} jobId={jobId!} />;
   } else if (isError) {
     throw error;
   }
