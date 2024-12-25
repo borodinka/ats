@@ -31,8 +31,8 @@ export default function JobList() {
             position: "fixed",
             bgcolor: Colors.white,
             zIndex: 1,
-            pt: 3.1,
-            mt: -3.1,
+            pt: 3.2,
+            mt: -3.2,
             pb: { xs: 1, md: 2 },
           }}
         >

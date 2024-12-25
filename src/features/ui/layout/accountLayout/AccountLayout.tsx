@@ -118,6 +118,8 @@ export default function AccountLayout() {
       <Box
         component="main"
         sx={{
+          display: "flex",
+          flexDirection: "column",
           width: "100%",
           px: {
             xs: 2,
