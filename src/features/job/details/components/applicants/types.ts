@@ -5,6 +5,7 @@ export interface ResumeExtraction {
   email: Applicant["email"];
   phone: Applicant["phone"];
   address: Applicant["address"];
+  aboutMe: Applicant["aboutMe"];
   education: Applicant["education"];
   yearsOfExperience: Applicant["yearsOfExperience"];
   jobRole: Applicant["jobRole"];

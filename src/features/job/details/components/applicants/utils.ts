@@ -102,6 +102,7 @@ const ResumeExtractionSchema = z.object({
   fullName: z.string(),
   email: z.string(),
   address: z.string(),
+  aboutMe: z.string(),
   education: z.string(),
   phone: z.string(),
   yearsOfExperience: z.number(),
@@ -117,7 +118,7 @@ export const getStructuredDataFromPDF = async (
       {
         role: "system",
         content:
-          "You are an expert at structured data extraction. You will receive unstructured text from a resume and format it according to the specified structure. Fields: fullName, email, phone, address, education, yearsOfExperience, and jobRole. Return null or an empty string for missing fields.",
+          "You are an expert at structured data extraction. You will receive unstructured text from a resume and format it according to the specified structure. Fields: fullName, email, phone, address, about me, education, yearsOfExperience, and jobRole. Return null or an empty string for missing fields.",
       },
       { role: "user", content: text },
     ],

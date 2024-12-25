@@ -22,6 +22,7 @@ export interface Applicant {
   email: string;
   phone: string;
   address?: string | null;
+  aboutMe: string;
   education: string;
   yearsOfExperience?: number;
   jobRole: string;

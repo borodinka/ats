@@ -266,6 +266,7 @@ function useResumeForm({
         email: structuredData.email,
         phone: structuredData.phone,
         address: structuredData.address,
+        aboutMe: structuredData.aboutMe,
         education: structuredData.education,
         yearsOfExperience: structuredData.yearsOfExperience,
         resume: uploadedFile,
