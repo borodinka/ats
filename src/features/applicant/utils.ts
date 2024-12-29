@@ -39,6 +39,8 @@ export const getStatusColor = (type: Status): string => {
       return Colors.orange;
     case "Declined":
       return Colors.tomato;
+    case "Final Decision":
+      return Colors.blue;
     default:
       return theme.palette.text.primary;
   }
@@ -49,10 +51,10 @@ export const getStageColor = (
   currentStageTitle: string | undefined,
 ): string => {
   const stageColors = [
-    Colors.aquamarine,
-    Colors.orange,
+    Colors.pink,
     Colors.blue,
-    Colors.tomato,
+    Colors.orange,
+    Colors.amethyst,
     theme.palette.primary.main,
   ];
 
