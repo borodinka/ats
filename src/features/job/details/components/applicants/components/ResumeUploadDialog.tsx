@@ -5,10 +5,12 @@ import {
   type SubmitHandler,
   useForm,
 } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 import { FormHelperText, Stack } from "@mui/material";
 
+import { AppRoutes } from "@config/routes";
 import {
   useAddApplicantMutation,
   useGetApplicantsByJobIdQuery,
@@ -129,6 +131,7 @@ function useResumeForm({
       resume: null,
     },
   });
+  const navigate = useNavigate();
   const { uploadResume, uploadProgress } = useResumeUpload();
   const { showSuccessMessage, showErrorMessage } = useToast();
   const [addApplicant, { isLoading }] = useAddApplicantMutation();
@@ -166,6 +169,8 @@ function useResumeForm({
   const stages: Applicant["stages"] = recruitmentStages.map((stage) => ({
     ...stage,
     feedback: "",
+    rating: 0,
+    interviewDate: null,
   }));
 
   const onSubmit: SubmitHandler<FormInput> = async (data) => {
@@ -224,11 +229,9 @@ function useResumeForm({
       if (existingApplicant) {
         const updatedFields: Partial<Applicant> = {
           jobId: jobId,
-          score: 0,
           status: "Interview",
           declineReason: null,
           stages: stages,
-          currentStage: stages[0],
         };
 
         setLoadingMessage("Adding applicant to the database...");
@@ -273,7 +276,7 @@ function useResumeForm({
         jobRole: structuredData.jobRole.toLowerCase(),
         jobId: jobId,
         stages: stages,
-        currentStage: stages[0],
+        currentStage: 0,
         score: 0,
         status: "Interview",
         declineReason: null,
@@ -289,6 +292,7 @@ function useResumeForm({
 
       showSuccessMessage("Applicant added successfully!");
       onClose();
+      navigate(`${AppRoutes.jobs}/${jobId}/applicants/${applicant.id}`);
     } catch (error) {
       const typedError = error as { message: string };
       showErrorMessage(typedError.message || "An unexpected error occurred");

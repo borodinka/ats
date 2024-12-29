@@ -45,7 +45,7 @@ export default function DotsMenu({
         status: "Declined",
         stages: [],
         score: 0,
-        currentStage: null,
+        currentStage: 0,
         declineReason:
           declineReason ?? "The candidate didn't match the job requirements",
       };
