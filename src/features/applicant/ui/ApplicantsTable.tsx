@@ -142,11 +142,19 @@ export default function ApplicantsTable({
                       sx={{ display: "block", p: 3, pl: 2 }}
                     >
                       <StyledChip
-                        text={applicant.currentStage?.title}
-                        color={getStageColor(
-                          applicant.stages,
-                          applicant.currentStage?.title,
-                        )}
+                        text={
+                          applicant.status === "Final Decision"
+                            ? applicant.status
+                            : applicant.stages[applicant.currentStage].title
+                        }
+                        color={
+                          applicant.status === "Final Decision"
+                            ? getStatusColor(applicant.status)
+                            : getStageColor(
+                                applicant.stages,
+                                applicant.stages[applicant.currentStage].title,
+                              )
+                        }
                       />
                     </ButtonBase>
                   </TableCell>

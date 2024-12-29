@@ -3,6 +3,8 @@ import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
 
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import { AppRouter } from "@config/routes";
 import ErrorBoundary from "@config/routes/components/ErrorBoundary";
@@ -18,12 +20,14 @@ export default function App() {
     <ErrorBoundary>
       <PersistGate loading={<Loader />} persistor={persistor}>
         <BrowserRouter>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <SnackbarProvider>
-              <AppRouter />
-            </SnackbarProvider>
-          </ThemeProvider>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <SnackbarProvider>
+                <AppRouter />
+              </SnackbarProvider>
+            </ThemeProvider>
+          </LocalizationProvider>
         </BrowserRouter>
       </PersistGate>
     </ErrorBoundary>

@@ -13,6 +13,8 @@ import Profile from "./Profile";
 interface Props {
   isJobView: boolean;
   applicant: Applicant;
+  onUpdate: (data: Partial<Applicant>) => void;
+  isLoading: boolean;
 }
 
 function CustomTabPanel({
@@ -36,7 +38,12 @@ function CustomTabPanel({
   );
 }
 
-export default function ApplicantTabs({ isJobView, applicant }: Props) {
+export default function ApplicantTabs({
+  isJobView,
+  applicant,
+  onUpdate,
+  isLoading,
+}: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedTab, setSelectedTab] = useState(() => {
     const tabParam = searchParams.get("selectedTab");
@@ -86,7 +93,13 @@ export default function ApplicantTabs({ isJobView, applicant }: Props) {
       </CustomTabPanel>
       {isJobView && (
         <CustomTabPanel value={selectedTab} index={1}>
-          <HiringProgress />
+          <HiringProgress
+            stages={applicant.stages}
+            currentStage={applicant.currentStage}
+            onUpdate={onUpdate}
+            isLoading={isLoading}
+            status={applicant.status}
+          />
         </CustomTabPanel>
       )}
     </Box>

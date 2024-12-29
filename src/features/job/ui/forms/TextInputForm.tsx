@@ -6,13 +6,14 @@ import { Colors } from "@config/styles";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
 interface Props {
-  id: string;
+  id?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any, unknown>;
   name: string;
   requireErrorText: string;
   placeHolder: string;
   autoFocus?: boolean;
+  isFeedback?: boolean;
 }
 
 export default function TextInputForm({
@@ -22,6 +23,7 @@ export default function TextInputForm({
   requireErrorText,
   placeHolder,
   autoFocus,
+  isFeedback,
 }: Props) {
   const { md } = useBreakpoints();
 
@@ -37,7 +39,7 @@ export default function TextInputForm({
         },
       }}
       render={({ field: { ref, ...field }, fieldState }) => (
-        <Stack width={1} gap={0.5} maxWidth={md ? 728 : 1}>
+        <Stack width={1} gap={0.5} maxWidth={md && !isFeedback ? 728 : 1}>
           <TextField
             id={id}
             inputRef={ref}

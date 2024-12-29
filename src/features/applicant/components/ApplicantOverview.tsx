@@ -21,6 +21,7 @@ import Divider from "@features/ui/Divider";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 import useToast from "@hooks/useToast";
 
+import { useUpdateApplicantMutation } from "../store/applicantsApi";
 import type { Applicant } from "../types";
 import Score from "../ui/Score";
 import StyledChip from "../ui/StyledChip";
@@ -41,6 +42,7 @@ export default function ApplicantOverview({ applicant, jobId }: Props) {
   const navigate = useNavigate();
   const { showErrorMessage } = useToast();
   const { md } = useBreakpoints();
+  const [updateApplicant, { isLoading }] = useUpdateApplicantMutation();
 
   const isJobView = Boolean(jobId);
 
@@ -50,6 +52,10 @@ export default function ApplicantOverview({ applicant, jobId }: Props) {
         ? `${AppRoutes.jobs}/${jobId}?selectedTab=1`
         : AppRoutes.applicants,
     );
+  };
+
+  const onUpdate = (data: Partial<Applicant>) => {
+    updateApplicant({ id: applicant!.id, data });
   };
 
   return (
@@ -134,11 +140,19 @@ export default function ApplicantOverview({ applicant, jobId }: Props) {
             </Stack>
             {isJobView && (
               <StyledChip
-                text={applicant.currentStage?.title}
-                color={getStageColor(
-                  applicant.stages,
-                  applicant.currentStage?.title,
-                )}
+                text={
+                  applicant.status === "Final Decision"
+                    ? applicant.status
+                    : applicant.stages[applicant.currentStage].title
+                }
+                color={
+                  applicant.status === "Final Decision"
+                    ? getStatusColor(applicant.status)
+                    : getStageColor(
+                        applicant.stages,
+                        applicant.stages[applicant.currentStage].title,
+                      )
+                }
               />
             )}
             <Stack flexDirection="row" gap={1} mb={1}>
@@ -220,7 +234,12 @@ export default function ApplicantOverview({ applicant, jobId }: Props) {
               px: 2,
             }}
           >
-            <ApplicantTabs isJobView={isJobView} applicant={applicant} />
+            <ApplicantTabs
+              isJobView={isJobView}
+              applicant={applicant}
+              onUpdate={onUpdate}
+              isLoading={isLoading}
+            />
           </Box>
         </Grid>
       </Grid>
