@@ -143,17 +143,17 @@ export default function ApplicantsTable({
                     >
                       <StyledChip
                         text={
-                          applicant.status === "Final Decision"
-                            ? applicant.status
-                            : applicant.stages[applicant.currentStage].title
+                          applicant.status === "Interview"
+                            ? applicant.stages[applicant.currentStage].title
+                            : applicant.status
                         }
                         color={
-                          applicant.status === "Final Decision"
-                            ? getStatusColor(applicant.status)
-                            : getStageColor(
+                          applicant.status === "Interview"
+                            ? getStageColor(
                                 applicant.stages,
                                 applicant.stages[applicant.currentStage].title,
                               )
+                            : getStatusColor(applicant.status)
                         }
                       />
                     </ButtonBase>

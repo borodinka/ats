@@ -55,7 +55,7 @@ export default function Profile({ applicant }: Props) {
           <Typography color={theme.palette.grey[100]}>
             Reason for Non-Selection
           </Typography>
-          <Typography color="text.secondary">
+          <Typography color="text.secondary" sx={{ whiteSpace: "pre-line" }}>
             {applicant.declineReason}
           </Typography>
         </Stack>
