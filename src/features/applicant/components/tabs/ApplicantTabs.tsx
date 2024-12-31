@@ -5,6 +5,7 @@ import { Box, Tab, Tabs } from "@mui/material";
 
 import { FontFamilies } from "@config/styles/FontFamilies";
 import { FontWeights } from "@config/styles/FontWeights";
+import type { Job } from "@features/job/types";
 
 import type { Applicant } from "../../types";
 import HiringProgress from "./HiringProgress";
@@ -15,6 +16,7 @@ interface Props {
   applicant: Applicant;
   onUpdate: (data: Partial<Applicant>) => void;
   isLoading: boolean;
+  jobId: Job["id"];
 }
 
 function CustomTabPanel({
@@ -43,6 +45,7 @@ export default function ApplicantTabs({
   applicant,
   onUpdate,
   isLoading,
+  jobId,
 }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedTab, setSelectedTab] = useState(() => {
@@ -99,6 +102,9 @@ export default function ApplicantTabs({
             onUpdate={onUpdate}
             isLoading={isLoading}
             status={applicant.status}
+            fullName={applicant.fullName}
+            jobId={jobId}
+            applicantId={applicant.id}
           />
         </CustomTabPanel>
       )}

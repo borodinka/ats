@@ -4,14 +4,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import PhoneIphoneOutlinedIcon from "@mui/icons-material/PhoneIphoneOutlined";
-import {
-  Box,
-  ButtonBase,
-  Grid,
-  IconButton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, IconButton, Stack, Typography } from "@mui/material";
 
 import { AppRoutes } from "@config/routes";
 import { Colors, theme } from "@config/styles";
@@ -23,6 +16,8 @@ import useToast from "@hooks/useToast";
 
 import { useUpdateApplicantMutation } from "../store/applicantsApi";
 import type { Applicant } from "../types";
+import DeclineButton from "../ui/DeclineButton";
+import HireButton from "../ui/HireButton";
 import Score from "../ui/Score";
 import StyledChip from "../ui/StyledChip";
 import {
@@ -82,20 +77,20 @@ export default function ApplicantOverview({ applicant, jobId }: Props) {
         </Stack>
         {isJobView && (
           <Stack flexDirection="row" gap={1}>
-            <ButtonBase sx={{ borderRadius: 4, height: 32 }}>
-              <StyledChip
-                text="Hire"
-                color={Colors.aquamarine}
-                sx={{ width: 80 }}
-              />
-            </ButtonBase>
-            <ButtonBase sx={{ borderRadius: 4, height: 32 }}>
-              <StyledChip
-                text="Decline"
-                color={Colors.tomato}
-                sx={{ width: 80 }}
-              />
-            </ButtonBase>
+            <HireButton
+              status={applicant.status}
+              onUpdate={onUpdate}
+              fullName={applicant.fullName}
+              jobId={jobId}
+              applicantId={applicant.id}
+            />
+            <DeclineButton
+              status={applicant.status}
+              onUpdate={onUpdate}
+              fullName={applicant.fullName}
+              jobId={jobId}
+              currentStage={applicant.currentStage}
+            />
           </Stack>
         )}
       </Stack>
@@ -141,17 +136,17 @@ export default function ApplicantOverview({ applicant, jobId }: Props) {
             {isJobView && (
               <StyledChip
                 text={
-                  applicant.status === "Final Decision"
-                    ? applicant.status
-                    : applicant.stages[applicant.currentStage].title
+                  applicant.status === "Interview"
+                    ? applicant.stages[applicant.currentStage].title
+                    : applicant.status
                 }
                 color={
-                  applicant.status === "Final Decision"
-                    ? getStatusColor(applicant.status)
-                    : getStageColor(
+                  applicant.status === "Interview"
+                    ? getStageColor(
                         applicant.stages,
                         applicant.stages[applicant.currentStage].title,
                       )
+                    : getStatusColor(applicant.status)
                 }
               />
             )}
@@ -239,6 +234,7 @@ export default function ApplicantOverview({ applicant, jobId }: Props) {
               applicant={applicant}
               onUpdate={onUpdate}
               isLoading={isLoading}
+              jobId={jobId}
             />
           </Box>
         </Grid>

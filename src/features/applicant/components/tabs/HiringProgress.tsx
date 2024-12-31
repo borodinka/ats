@@ -6,6 +6,7 @@ import { FormHelperText, Rating, Stack, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 
 import { theme } from "@config/styles";
+import type { Job } from "@features/job/types";
 import { TextInputForm } from "@features/job/ui/forms";
 
 import type { Applicant } from "../../types";
@@ -18,6 +19,9 @@ interface Props {
   onUpdate: (data: Partial<Applicant>) => void;
   isLoading: boolean;
   status: Applicant["status"];
+  fullName: Applicant["fullName"];
+  jobId: Job["id"];
+  applicantId: Applicant["id"];
 }
 
 interface FormInput {
@@ -32,6 +36,9 @@ export default function HiringProgress({
   onUpdate,
   isLoading,
   status,
+  fullName,
+  jobId,
+  applicantId,
 }: Props) {
   const { control, handleSubmit, onSubmit, handleBack, handleNext, viewStage } =
     useHiringForm({
@@ -39,6 +46,7 @@ export default function HiringProgress({
       currentStage,
       onUpdate,
       isLoading,
+      status,
     });
 
   return (
@@ -60,7 +68,7 @@ export default function HiringProgress({
           <Typography color={theme.palette.grey[100]}>
             Interview Date
           </Typography>
-          {viewStage < currentStage || status === "Final Decision" ? (
+          {viewStage < currentStage || status !== "Interview" ? (
             <Typography color="text.secondary">
               {dayjs(stages[viewStage].interviewDate).format("D MMMM YYYY")}
             </Typography>
@@ -118,7 +126,7 @@ export default function HiringProgress({
         <Typography color={theme.palette.grey[100]} mb={0.5}>
           Rating
         </Typography>
-        {viewStage < currentStage || status === "Final Decision" ? (
+        {viewStage < currentStage || status !== "Interview" ? (
           <Rating value={stages[viewStage].rating} precision={0.5} readOnly />
         ) : (
           <Controller
@@ -148,7 +156,7 @@ export default function HiringProgress({
         <Typography color={theme.palette.grey[100]} mb={0.5}>
           Feedback
         </Typography>
-        {viewStage < currentStage || status === "Final Decision" ? (
+        {viewStage < currentStage || status !== "Interview" ? (
           <Typography color="text.secondary">
             {stages[viewStage].feedback}
           </Typography>
@@ -173,6 +181,9 @@ export default function HiringProgress({
         status={status}
         onSubmit={handleSubmit(onSubmit)}
         onUpdate={onUpdate}
+        fullName={fullName}
+        jobId={jobId}
+        applicantId={applicantId}
       />
     </Stack>
   );
@@ -183,7 +194,11 @@ function useHiringForm({
   currentStage,
   onUpdate,
   isLoading,
-}: Pick<Props, "stages" | "currentStage" | "onUpdate" | "isLoading">) {
+  status,
+}: Pick<
+  Props,
+  "stages" | "currentStage" | "onUpdate" | "isLoading" | "status"
+>) {
   const { control, handleSubmit, reset } = useForm<FormInput>({
     mode: "onChange",
     defaultValues: {
@@ -201,6 +216,12 @@ function useHiringForm({
       interviewDate: stages[currentStage].interviewDate,
     });
   }, [currentStage, stages, reset]);
+
+  useEffect(() => {
+    if (status === "Declined" && currentStage > 0) {
+      setViewStage((prev) => prev - 1);
+    }
+  }, [status, currentStage]);
 
   const handleBack = () => {
     if (viewStage > 0) {
