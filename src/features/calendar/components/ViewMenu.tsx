@@ -40,7 +40,7 @@ export default function ViewMenu({
       <AppButton
         variant="outlined"
         onClickEvent={handleMenuOpen}
-        sx={{ height: 46 }}
+        sx={{ height: 42 }}
       >
         <Stack>
           <FilterListOutlinedIcon style={{ fontSize: "1.8rem" }} />

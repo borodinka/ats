@@ -5,7 +5,7 @@ export const CALENDAR_STYLES = {
   ".fc-today-button": {
     backgroundColor: "inherit !important",
     color: `${theme.palette.primary.main} !important`,
-    borderColor: `${Colors.primaryGrey} !important`,
+    borderColor: " rgba(70, 64, 222, 0.5) !important",
     borderWidth: "1px !important",
     borderRadius: "0 !important",
     fontWeight: `${FontWeights.bold} !important`,
@@ -17,6 +17,10 @@ export const CALENDAR_STYLES = {
       backgroundColor: "rgba(70, 64, 222, 0.04) !important",
       borderColor: "rgb(193, 199, 212) !important",
       cursor: "pointer",
+    },
+    "&:disabled": {
+      color: `${Colors.primaryGrey} !important`,
+      borderColor: `${Colors.primaryGrey} !important`,
     },
   },
   ".fc-toolbar.fc-header-toolbar ": {
@@ -88,6 +92,12 @@ export const CALENDAR_STYLES = {
   },
   ".fc-scrollgrid-section-body table": {
     width: "100% !important",
+  },
+  ".fc-theme-standard td, .fc-theme-standard th": {
+    border: `0.5px solid ${Colors.primaryGrey} `,
+  },
+  ".fc-scrollgrid": {
+    border: "none",
   },
   height: 1,
   mt: { md: -5, lg: -0.5 },
