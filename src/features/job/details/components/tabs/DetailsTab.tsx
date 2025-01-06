@@ -8,7 +8,14 @@ import { Box, Chip, Grid, Stack, Typography } from "@mui/material";
 
 import { Colors } from "@config/styles";
 import { FontWeights } from "@config/styles/FontWeights";
-import { useGetApplicantsByJobIdQuery } from "@features/applicant/store/applicantsApi";
+import {
+  useGetApplicantsByJobIdQuery,
+  useUpdateApplicantMutation,
+} from "@features/applicant/store/applicantsApi";
+import {
+  type Applicant,
+  type StageWithFeedback,
+} from "@features/applicant/types";
 import AppButton from "@features/ui/AppButton";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
@@ -55,9 +62,11 @@ interface FormInput {
 
 export default function DetailsTab({ job, onUpdate }: Props) {
   const [isEditMode, setIsEditMode] = useState(false);
+  const { data: applicants } = useGetApplicantsByJobIdQuery(job.id);
   const { control, setValue, handleSubmit } = useJobDetailsForm({
     job,
     onUpdate,
+    applicants,
   });
   const { md } = useBreakpoints();
   const [minSalary, maxSalary] = job.salary;
@@ -68,12 +77,10 @@ export default function DetailsTab({ job, onUpdate }: Props) {
     return `$${Math.round(salary / 1000)}k`;
   };
 
-  const { data: applicants } = useGetApplicantsByJobIdQuery(job.id);
-
   const currentApplicants = applicants?.length ?? 0;
 
   return (
-    <Stack gap={2}>
+    <Stack gap={2} pb={3}>
       <AppButton
         variant="outlined"
         onClick={() => {
@@ -329,7 +336,15 @@ export default function DetailsTab({ job, onUpdate }: Props) {
   );
 }
 
-function useJobDetailsForm({ job, onUpdate }: Props) {
+function useJobDetailsForm({
+  job,
+  onUpdate,
+  applicants,
+}: {
+  job: Job;
+  onUpdate: (data: Partial<Job>) => void;
+  applicants: Applicant[] | undefined;
+}) {
   const { control, watch, setValue, handleSubmit } = useForm<FormInput>({
     mode: "onChange",
     defaultValues: {
@@ -348,6 +363,7 @@ function useJobDetailsForm({ job, onUpdate }: Props) {
       capacity: job.capacity,
     },
   });
+  const [updateApplicant] = useUpdateApplicantMutation();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const onUpdateDebounced = useCallback(
@@ -375,11 +391,32 @@ function useJobDetailsForm({ job, onUpdate }: Props) {
         newValue.stages
       ) {
         onUpdateDebounced(newValue as Partial<Job>);
+
+        if (newValue.stages) {
+          applicants?.forEach((applicant) => {
+            const updatedStages = newValue?.stages?.map((stage) => {
+              const existingStage = applicant.stages.find(
+                (s) => s.id === stage?.id,
+              );
+              return {
+                ...stage,
+                feedback: existingStage?.feedback || "",
+                rating: existingStage?.rating || 0,
+                interviewDate: existingStage?.interviewDate || null,
+              } as StageWithFeedback;
+            });
+
+            updateApplicant({
+              id: applicant.id,
+              data: { stages: updatedStages },
+            });
+          });
+        }
       }
     });
 
     return () => formUpdateSubscription.unsubscribe();
-  }, [onUpdateDebounced, watch]);
+  }, [applicants, onUpdateDebounced, updateApplicant, watch]);
 
   return {
     control,
