@@ -3,13 +3,15 @@ import { useEffect, useState } from "react";
 import { Controller, type SubmitHandler, useForm } from "react-hook-form";
 
 import { FormHelperText, Rating, Stack, Typography } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
 
 import { theme } from "@config/styles";
+import { selectUser } from "@features/auth/store/authSlice";
 import type { Job } from "@features/job/types";
 import { TextInputForm } from "@features/job/ui/forms";
+import InterviewDatePicker from "@features/ui/InterviewDatePicker";
+import { useAppSelector } from "@store/index";
 
-import type { Applicant } from "../../types";
+import { type Applicant, type StageWithFeedback } from "../../types";
 import Pagination from "../navigation/Pagination";
 import StyledStepper from "../navigation/StyledStepper";
 
@@ -25,9 +27,9 @@ interface Props {
 }
 
 interface FormInput {
-  feedback: string;
-  rating: number;
-  interviewDate: Date | null;
+  feedback: StageWithFeedback["feedback"];
+  rating: StageWithFeedback["rating"];
+  interviewDate: StageWithFeedback["interviewDate"];
 }
 
 export default function HiringProgress({
@@ -48,6 +50,9 @@ export default function HiringProgress({
       isLoading,
       status,
     });
+  const user = useAppSelector(selectUser);
+
+  const isUserAssignedToStage = stages[currentStage].email === user?.email;
 
   return (
     <Stack sx={{ gap: { xs: 2, md: 3 } }}>
@@ -68,42 +73,16 @@ export default function HiringProgress({
           <Typography color={theme.palette.grey[100]}>
             Interview Date
           </Typography>
-          {viewStage < currentStage || status !== "Interview" ? (
+          {viewStage < currentStage ||
+          status !== "Interview" ||
+          stages[viewStage].interviewDate !== null ? (
             <Typography color="text.secondary">
               {dayjs(stages[viewStage].interviewDate).format("D MMMM YYYY")}
             </Typography>
           ) : (
-            <Controller
-              name="interviewDate"
+            <InterviewDatePicker
               control={control}
-              rules={{
-                required: "Please specify interview date",
-                validate: (value) =>
-                  dayjs(value).isAfter(dayjs(), "day") ||
-                  "Date cannot be in the past",
-              }}
-              render={({ field: { ref, ...field }, fieldState }) => (
-                <DatePicker
-                  slotProps={{
-                    textField: {
-                      inputRef: ref,
-                      variant: "outlined",
-                      helperText: fieldState.error?.message,
-                      error: Boolean(fieldState.error),
-                    },
-                  }}
-                  {...field}
-                  value={field.value ? dayjs(field.value) : null}
-                  onChange={(newValue) => {
-                    const parsedValue = newValue
-                      ? dayjs(newValue).toISOString()
-                      : null;
-                    field.onChange(parsedValue);
-                  }}
-                  minDate={dayjs()}
-                  sx={{ mt: 0.5, svg: { color: theme.palette.grey[100] } }}
-                />
-              )}
+              isUserAssignedToStage={isUserAssignedToStage}
             />
           )}
         </Stack>
