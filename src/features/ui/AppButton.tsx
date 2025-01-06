@@ -9,6 +9,7 @@ interface Props {
   LinkComponent?: React.ElementType;
   href?: string;
   onClick?: () => void;
+  onClickEvent?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   loading?: boolean;
   disabled?: boolean;
   sx?: SxProps<Theme>;
@@ -22,6 +23,7 @@ export default function AppButton({
   LinkComponent,
   href,
   onClick,
+  onClickEvent,
   loading,
   disabled = false,
   sx,
@@ -33,7 +35,7 @@ export default function AppButton({
       type={type}
       variant={variant}
       fullWidth={fullWidth}
-      onClick={onClick}
+      onClick={onClickEvent ? onClickEvent : onClick}
       loading={loading}
       disabled={disabled}
       sx={{ height: 50, textTransform: "none", ...sx }}

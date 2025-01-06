@@ -7,15 +7,17 @@ import {
   Typography,
 } from "@mui/material";
 
+import { useBreakpoints } from "@hooks/useBreakpoints";
+
 import AppButton from "./AppButton";
 
 interface Props {
   title: string;
   isOpen: boolean;
   onClose: () => void;
-  primaryButtonText: string;
+  primaryButtonText?: string;
   secondaryButtonText?: string;
-  onPrimaryButtonClick: () => void;
+  onPrimaryButtonClick?: () => void;
   onSecondaryButtonClick?: () => void;
   hideCloseButton?: boolean;
   isLoading?: boolean;
@@ -34,6 +36,7 @@ export default function AppDialog({
   hideCloseButton,
   isLoading,
 }: Props) {
+  const { md } = useBreakpoints();
   return (
     <Dialog
       onClose={onClose}
@@ -57,14 +60,14 @@ export default function AppDialog({
             top: 8,
           }}
         >
-          <CloseIcon fontSize="large" />
+          <CloseIcon fontSize={md ? "large" : "medium"} />
         </IconButton>
       )}
       <Typography
         textAlign="center"
         variant="h4"
         sx={{
-          pt: 7,
+          pt: { xs: 5, md: 7 },
           px: 3,
           pb: { xs: 3, md: 4 },
         }}

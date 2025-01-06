@@ -12,4 +12,5 @@ export const Colors = {
   amethyst: "#B664CD",
   red: "#FF0000",
   yellow: "#FAAF00;",
+  lightTomato: "#FFF0EE",
 };
