@@ -2,23 +2,26 @@ import { Stack, Typography } from "@mui/material";
 
 import { useBreakpoints } from "@hooks/useBreakpoints";
 
-import NoDataImage from "../assets/no-data.png";
+import NoEventsImage from "../assets/no-events.png";
 
-export default function NoJobs() {
+export default function NoEvents() {
   const { md } = useBreakpoints();
 
   return (
     <Stack>
       <img
-        src={NoDataImage}
-        alt="Empty clipboards"
-        style={{ display: "block", width: !md ? 330 : 400 }}
+        src={NoEventsImage}
+        alt="Girl with scheduler"
+        style={{
+          display: "block",
+          width: !md ? 330 : 400,
+        }}
       />
       <Stack gap={2} textAlign="center">
         <Typography variant="h2" color="text.secondary">
-          No job offers here
+          No events here
         </Typography>
-        <Typography>Create one to get started!</Typography>
+        <Typography>Schedule an interview to get started!</Typography>
       </Stack>
     </Stack>
   );

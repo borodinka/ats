@@ -40,6 +40,10 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 0,
+          "&.Mui-disabled": {
+            color: Colors.primaryGrey,
+            borderColor: Colors.primaryGrey,
+          },
         },
       },
     },
@@ -58,6 +62,17 @@ const theme = createTheme({
         root: ({ theme }) => ({
           color: theme.palette.grey[100],
         }),
+      },
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: ({ theme }) => ({
+          backgroundColor: theme.palette.grey[100],
+          textAlign: "center",
+        }),
+      },
+      defaultProps: {
+        enterTouchDelay: 50,
       },
     },
   },

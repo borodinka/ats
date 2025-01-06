@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import AddIcon from "@mui/icons-material/Add";
-import { Stack } from "@mui/material";
+import { Stack, Tooltip } from "@mui/material";
 
 import { useGetApplicantsByJobIdQuery } from "@features/applicant/store/applicantsApi";
 import AppButton from "@features/ui/AppButton";
@@ -34,22 +34,31 @@ export default function ApplicantsTab({
 
   return (
     <Stack gap={2}>
-      <AppButton
-        variant="outlined"
-        onClick={open}
-        disabled={currentApplicants >= capacity}
-        sx={{ alignSelf: "flex-end" }}
+      <Tooltip
+        title={
+          currentApplicants >= capacity
+            ? "The applicant capacity has been reached. You can't add more"
+            : ""
+        }
       >
-        <Stack
-          component="span"
-          gap={1}
-          alignItems="center"
-          justifyContent="center"
-          direction="row"
-        >
-          <AddIcon /> {md && "Add"}
-        </Stack>
-      </AppButton>
+        <span style={{ alignSelf: "flex-end" }}>
+          <AppButton
+            variant="outlined"
+            onClick={open}
+            disabled={currentApplicants >= capacity}
+          >
+            <Stack
+              component="span"
+              gap={1}
+              alignItems="center"
+              justifyContent="center"
+              direction="row"
+            >
+              <AddIcon /> {md && "Add"}
+            </Stack>
+          </AppButton>
+        </span>
+      </Tooltip>
       <ResumeUploadDialog
         isOpen={isOpen}
         onClose={close}

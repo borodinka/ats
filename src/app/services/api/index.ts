@@ -8,3 +8,4 @@ export {
   updateApplicant,
   deleteApplicant,
 } from "./applicant";
+export { addEvent, getEvents, updateEvent, deleteEvent } from "./event";

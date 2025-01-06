@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ButtonBase, Tooltip } from "@mui/material";
 
 import { AppRoutes } from "@config/routes";
-import { Colors, theme } from "@config/styles";
+import { Colors } from "@config/styles";
 import { useDeleteJobMutation } from "@features/job/store/jobsApi";
 import type { Job } from "@features/job/types";
 import AppDialog from "@features/ui/AppDialog";
@@ -98,14 +98,6 @@ export default function HireButton({
                 : "Hiring is only available after all stages are completed"
               : ""
         }
-        componentsProps={{
-          tooltip: {
-            sx: {
-              backgroundColor: theme.palette.grey[100],
-              textAlign: "center",
-            },
-          },
-        }}
       >
         <span>
           <ButtonBase

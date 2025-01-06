@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 
 import { AppRoutes } from "@config/routes";
-import { Colors, theme } from "@config/styles";
+import { Colors } from "@config/styles";
 import type { Job } from "@features/job/types";
 import AppDialog from "@features/ui/AppDialog";
 import useToast from "@hooks/useToast";
@@ -93,14 +93,6 @@ export default function DeclineButton({
               ? "This applicant has already been declined for this position"
               : ""
         }
-        componentsProps={{
-          tooltip: {
-            sx: {
-              backgroundColor: theme.palette.grey[100],
-              textAlign: "center",
-            },
-          },
-        }}
       >
         <span>
           <ButtonBase

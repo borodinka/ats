@@ -13,7 +13,7 @@ export interface FileUpload extends ResumeFile {
 export interface StageWithFeedback extends RecruitmentStage {
   feedback: string;
   rating: number;
-  interviewDate: Date | null;
+  interviewDate: Date | null | string;
 }
 
 export type Status = "Interview" | "Final Decision" | "Hired" | "Declined";

@@ -14,6 +14,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
 import { applicantsApi } from "@features/applicant/store/applicantsApi";
 import authReducer from "@features/auth/store/authSlice";
+import { eventsApi } from "@features/calendar/store/eventsApi";
 import jobWizardReducer from "@features/job/add-job/store/jobWizardSlice";
 import { jobsApi } from "@features/job/store/jobsApi";
 
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   jobWizard: jobWizardReducer,
   [jobsApi.reducerPath]: jobsApi.reducer,
   [applicantsApi.reducerPath]: applicantsApi.reducer,
+  [eventsApi.reducerPath]: eventsApi.reducer,
 });
 
 const persistConfig = {
@@ -44,6 +46,7 @@ export const store = configureStore({
     })
       .concat(jobsApi.middleware)
       .concat(applicantsApi.middleware)
+      .concat(eventsApi.middleware)
       .concat(rtkQueryErrorLogger),
 });
 

@@ -13,15 +13,7 @@ import {
 import type { Job } from "@features/job/types";
 import { auth, firestore } from "@services/firebase";
 
-function authenticate<T>(authenticatedFn: () => Promise<T>) {
-  if (!auth.currentUser) {
-    throw Error(
-      "You need to be logged in to perform this action. Please log in or create an account to continue",
-    );
-  }
-
-  return authenticatedFn();
-}
+import { authenticate } from "./utils";
 
 export async function addJob(job: Job) {
   return authenticate(async () => {
