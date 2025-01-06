@@ -40,7 +40,16 @@ export default function JobDetails() {
   } else if (isSuccess) {
     return (
       <Stack>
-        <Stack sx={{ bgcolor: Colors.lightViolet, m: -4, p: 4, pb: 0 }}>
+        <Stack
+          sx={{
+            bgcolor: Colors.lightViolet,
+            m: -4,
+            p: 4,
+            pb: 0,
+            pr: { xs: 2, md: 4 },
+            mr: { xs: -2, md: -4 },
+          }}
+        >
           <Breadcrumbs
             aria-label="breadcrumb"
             sx={{ color: theme.palette.grey[100] }}
