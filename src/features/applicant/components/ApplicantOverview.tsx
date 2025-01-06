@@ -4,15 +4,24 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import PhoneIphoneOutlinedIcon from "@mui/icons-material/PhoneIphoneOutlined";
-import { Box, Grid, IconButton, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 
 import { AppRoutes } from "@config/routes";
 import { Colors, theme } from "@config/styles";
+import { selectUser } from "@features/auth/store/authSlice";
 import type { Job } from "@features/job/types";
 import AppButton from "@features/ui/AppButton";
 import Divider from "@features/ui/Divider";
 import { useBreakpoints } from "@hooks/useBreakpoints";
 import useToast from "@hooks/useToast";
+import { useAppSelector } from "@store/index";
 
 import { useUpdateApplicantMutation } from "../store/applicantsApi";
 import type { Applicant } from "../types";
@@ -38,6 +47,11 @@ export default function ApplicantOverview({ applicant, jobId }: Props) {
   const { showErrorMessage } = useToast();
   const { md } = useBreakpoints();
   const [updateApplicant, { isLoading }] = useUpdateApplicantMutation();
+  const user = useAppSelector(selectUser);
+
+  const isUserAssignedToStage =
+    applicant.stages.length > 0 &&
+    applicant.stages[applicant.currentStage].email === user?.email;
 
   const isJobView = Boolean(jobId);
 
@@ -152,13 +166,52 @@ export default function ApplicantOverview({ applicant, jobId }: Props) {
             )}
             <Stack flexDirection="row" gap={1} mb={1}>
               {isJobView && (
-                <AppButton
-                  variant="outlined"
-                  onClick={() => console.log("interview")}
-                  fullWidth
+                <Tooltip
+                  title={
+                    applicant.status === "Hired"
+                      ? "This applicant has already been hired. You cannot schedule another interview"
+                      : applicant.status === "Declined"
+                        ? "This applicant has been declined. You cannot schedule an interview"
+                        : applicant.status === "Final Decision"
+                          ? "All recruitment stages are complete. You cannot schedule additional interviews"
+                          : !isUserAssignedToStage
+                            ? `The interview for this stage is assigned to ${applicant.stages[applicant.currentStage].email}. Please reach out to them for more information`
+                            : applicant.stages[applicant.currentStage]
+                                  .interviewDate !== null
+                              ? "Interview already scheduled"
+                              : ""
+                  }
                 >
-                  Schedule Interview
-                </AppButton>
+                  <span style={{ width: "100%" }}>
+                    <AppButton
+                      variant="outlined"
+                      onClick={() =>
+                        navigate(AppRoutes.schedule, {
+                          state: {
+                            jobId: jobId,
+                            applicantId: applicant.id,
+                            applicantFullName: applicant.fullName,
+                            applicantEmail: applicant.email,
+                            jobRole: applicant.jobRole,
+                            stageTitle:
+                              applicant.stages[applicant.currentStage].title,
+                            currentStage: applicant.currentStage,
+                            stages: applicant.stages,
+                          },
+                        })
+                      }
+                      fullWidth
+                      disabled={
+                        applicant.status !== "Interview" ||
+                        !isUserAssignedToStage ||
+                        applicant.stages[applicant.currentStage]
+                          .interviewDate !== null
+                      }
+                    >
+                      Schedule Interview
+                    </AppButton>
+                  </span>
+                </Tooltip>
               )}
               <AppButton
                 variant="outlined"
