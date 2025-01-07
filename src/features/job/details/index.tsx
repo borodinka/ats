@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useParams } from "react-router-dom";
 
 import {
@@ -27,9 +28,12 @@ export default function JobDetails() {
   } = useGetJobByIdQuery(jobId);
   const [updateJob] = useUpdateJobMutation();
 
-  const onUpdate = (data: Partial<Job>) => {
-    updateJob({ id: job!.id, data });
-  };
+  const onUpdate = useCallback(
+    (data: Partial<Job>) => {
+      updateJob({ id: jobId!, data });
+    },
+    [jobId, updateJob],
+  );
 
   if (isLoading) {
     return (

@@ -18,21 +18,30 @@ interface Props {
   id: string;
   maxValue: number;
   name: string;
+  currentApplicants?: number;
 }
 
 export default function NumberInput({
   control,
-
   id,
   maxValue,
   name,
+  currentApplicants,
 }: Props) {
   return (
     <Controller
       name={name}
       control={control}
       rules={{
-        validate: (value) => value > 0 || "Please specify number of stages",
+        validate: (value) => {
+          if (currentApplicants !== undefined) {
+            return (
+              value >= currentApplicants ||
+              "Capacity can't be less than the number of applicants"
+            );
+          }
+          return value > 0 || "Please specify the number of stages";
+        },
       }}
       render={({ field: { ref, value, ...field }, fieldState }) => (
         <Stack id={id} ref={ref}>
@@ -68,7 +77,7 @@ export default function NumberInput({
               <AddIcon />
             </IconButton>
           </Box>
-          <FormHelperText error={Boolean(fieldState.error)}>
+          <FormHelperText error={Boolean(fieldState.error)} sx={{ width: 142 }}>
             {fieldState.error?.message}
           </FormHelperText>
         </Stack>

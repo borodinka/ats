@@ -114,6 +114,7 @@ function useRecruitmentStagesForm() {
       numberOfStages: data.numberOfStages,
       stages: data.stages,
       capacity: data.capacity,
+      applicantsNumber: 0,
     });
 
     if (!("error" in result)) {

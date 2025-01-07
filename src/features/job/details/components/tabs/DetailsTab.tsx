@@ -79,6 +79,10 @@ export default function DetailsTab({ job, onUpdate }: Props) {
 
   const currentApplicants = applicants?.length ?? 0;
 
+  useEffect(() => {
+    onUpdate({ applicantsNumber: currentApplicants });
+  }, [currentApplicants, onUpdate]);
+
   return (
     <Stack gap={2} pb={3}>
       <AppButton
@@ -173,7 +177,10 @@ export default function DetailsTab({ job, onUpdate }: Props) {
                     alignItems="center"
                   >
                     <Typography>Capacity</Typography>
-                    <CapacityForm control={control} />
+                    <CapacityForm
+                      control={control}
+                      currentApplicants={currentApplicants}
+                    />
                   </Stack>
                 )}
                 <ApplicationProgressBar
