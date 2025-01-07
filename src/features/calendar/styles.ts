@@ -94,7 +94,7 @@ export const CALENDAR_STYLES = {
     width: "100% !important",
   },
   ".fc-theme-standard td, .fc-theme-standard th": {
-    border: `0.5px solid ${Colors.primaryGrey} `,
+    border: `0.7px solid ${Colors.primaryGrey} `,
   },
   ".fc-scrollgrid": {
     border: "none",

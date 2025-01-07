@@ -5,7 +5,7 @@ import Applicants from "@features/applicant/pages/applicants";
 import Login from "@features/auth/pages/login";
 import SignUp from "@features/auth/pages/sign-up";
 import Schedule from "@features/calendar/pages/schedule";
-import Dashboard from "@features/dashboard/dashboard";
+import Dashboard from "@features/dashboard/pages/dashboard";
 import Home from "@features/home/pages/home";
 import NotFound from "@features/home/pages/not-found";
 import AddJob from "@features/job/pages/add-job";

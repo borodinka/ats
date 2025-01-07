@@ -46,4 +46,5 @@ export interface Job {
   numberOfStages: number;
   stages: RecruitmentStage[];
   capacity: number;
+  applicantsNumber?: number;
 }
