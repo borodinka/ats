@@ -57,7 +57,7 @@ export default function Overview() {
   };
 
   return (
-    <Stack gap={md ? 4 : 2} pb={!md ? 3 : 0}>
+    <Stack gap={md ? 4 : 2} pb={3}>
       <Typography variant="h1" color="text.secondary">
         {getGreeting()}, {userFullName}!
       </Typography>
