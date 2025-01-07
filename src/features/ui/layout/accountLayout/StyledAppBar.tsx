@@ -1,6 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
 import NotesOutlinedIcon from "@mui/icons-material/NotesOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import { AppBar, IconButton, Link, Stack, Toolbar } from "@mui/material";
 
 import { AppRoutes } from "@config/routes";
@@ -40,11 +39,6 @@ export default function StyledAppBar({ onClick }: Props) {
             <NotesOutlinedIcon sx={{ color: "text.secondary", fontSize: 30 }} />
           </IconButton>
         )}
-        <IconButton color="inherit" aria-label="open notifications" edge="end">
-          <NotificationsOutlinedIcon
-            sx={{ color: "text.secondary", fontSize: 30 }}
-          />
-        </IconButton>
         {md && (
           <AppButton LinkComponent={Link} href={AppRoutes.addJob}>
             <Stack
