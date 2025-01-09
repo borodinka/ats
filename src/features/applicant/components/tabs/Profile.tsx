@@ -23,12 +23,14 @@ export default function Profile({ applicant }: Props) {
           <Stack>
             <Typography color={theme.palette.grey[100]}>Phone</Typography>
             <Typography color="text.secondary">{applicant.phone}</Typography>
-          </Stack>{" "}
+          </Stack>
         </>
       )}
       <Stack>
         <Typography color={theme.palette.grey[100]}>About Me</Typography>
-        <Typography color="text.secondary">{applicant.aboutMe}</Typography>
+        <Typography color="text.secondary">
+          {applicant.aboutMe ? applicant.aboutMe : "Not provided"}
+        </Typography>
       </Stack>
       <Stack>
         <Typography color={theme.palette.grey[100]}>Address</Typography>
