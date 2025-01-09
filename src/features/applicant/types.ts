@@ -24,9 +24,9 @@ export interface Applicant {
   email: string;
   phone: string;
   address?: string | null;
-  aboutMe: string;
+  aboutMe?: string | null;
   education: string;
-  yearsOfExperience?: number;
+  yearsOfExperience?: number | null;
   jobRole: string;
   resume: ResumeFile;
   jobId?: Job["id"] | null;
