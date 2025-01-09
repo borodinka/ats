@@ -1,8 +1,6 @@
+import { httpsCallable } from "firebase/functions";
 import { ref, uploadBytesResumable } from "firebase/storage";
-import OpenAI from "openai";
-import { zodResponseFormat } from "openai/helpers/zod";
 import { useState } from "react";
-import { z } from "zod";
 
 import {
   type Applicant,
@@ -11,10 +9,10 @@ import {
 } from "@features/applicant/types";
 import { selectUser } from "@features/auth/store/authSlice";
 import useToast from "@hooks/useToast";
-import { storage } from "@services/firebase";
+import { functions, storage } from "@services/firebase";
 import { useAppSelector } from "@store/index";
 
-import type { ResumeExtraction } from "./types";
+import { ResumeExtraction } from "./types";
 
 export function useResumeUpload() {
   const [state, setState] = useState<{
@@ -93,40 +91,15 @@ export const extractTextFromPDF = async (file: File): Promise<string> => {
   return text;
 };
 
-const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true,
-});
-
-const ResumeExtractionSchema = z.object({
-  fullName: z.string(),
-  email: z.string(),
-  address: z.string(),
-  aboutMe: z.string(),
-  education: z.string(),
-  phone: z.string(),
-  yearsOfExperience: z.number(),
-  jobRole: z.string(),
-});
-
 export const getStructuredDataFromPDF = async (
   text: string,
 ): Promise<ResumeExtraction | null> => {
-  const completion = await openai.beta.chat.completions.parse({
-    model: "gpt-4o-2024-08-06",
-    messages: [
-      {
-        role: "system",
-        content:
-          "You are an expert at structured data extraction. You will receive unstructured text from a resume and format it according to the specified structure. Fields: fullName, email, phone, address, about me, education, yearsOfExperience, and jobRole. Return null or an empty string for missing fields.",
-      },
-      { role: "user", content: text },
-    ],
-    response_format: zodResponseFormat(
-      ResumeExtractionSchema,
-      "resume_extraction",
-    ),
-  });
+  const extractStructuredDataFunction = httpsCallable(
+    functions,
+    "extractStructuredData",
+  );
+  const result = await extractStructuredDataFunction({ text });
 
-  return completion.choices[0]?.message.parsed ?? null;
+  const structuredData = result.data as { data: ResumeExtraction };
+  return structuredData.data;
 };
