@@ -38,6 +38,12 @@ export default function CustomSelect({
   renderSelectedItem,
   maxAmount,
 }: Props) {
+  const isRecruitmentStage = (item: CustomSelectType): boolean => {
+    return (
+      typeof item === "object" && "description" in item && !("iconName" in item)
+    );
+  };
+
   return (
     <Controller
       name={name}
@@ -119,6 +125,10 @@ export default function CustomSelect({
                   display: "flex",
                   flexWrap: "wrap",
                   gap: 2,
+                  flexDirection:
+                    typedValue.length > 0 && isRecruitmentStage(typedValue[0])
+                      ? "column"
+                      : "row",
                 }}
               >
                 {typedValue.map((v) =>
