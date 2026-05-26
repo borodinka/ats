@@ -276,7 +276,19 @@ export default function Calendar({ events }: Props) {
               }}
               dayHeaderContent={(args) => {
                 const isWeekView = currentView === "timeGridWeek";
-                return <DayHeader date={args.date} isWeekView={isWeekView} />;
+                return (
+                  <DayHeader
+                    label={
+                      isWeekView
+                        ? args.date.toLocaleString("en-US", {
+                            weekday: "short",
+                          })
+                        : args.text
+                    }
+                    date={args.date}
+                    isWeekView={isWeekView}
+                  />
+                );
               }}
               eventContent={(event) => {
                 const startDate = event.event.start;

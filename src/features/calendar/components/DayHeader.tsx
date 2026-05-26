@@ -5,13 +5,12 @@ import { FontWeights } from "@config/styles/FontWeights";
 
 interface Props {
   date: Date;
+  label: string;
   isWeekView: boolean;
 }
 
-export default function DayHeader({ date, isWeekView }: Props) {
+export default function DayHeader({ date, label, isWeekView }: Props) {
   const day = date.getDate();
-  const weekday = date.toLocaleString("en-US", { weekday: "short" });
-
   const today = new Date();
   const isToday =
     date.getDate() === today.getDate() &&
@@ -26,7 +25,7 @@ export default function DayHeader({ date, isWeekView }: Props) {
         color={theme.palette.grey[100]}
         textTransform="uppercase"
       >
-        {weekday}
+        {label}
       </Typography>
       {isWeekView && (
         <Box
